@@ -46,9 +46,9 @@ multipleBlocks = do generate 1
 
 
 multipleBlocksTest = TestCase (assertEqual "for (runState multipleBlocks initState),"
-                                           (round(2), BlockState [GenerateRangeNoLimit 1 0 0 (round 0),
+                                           (round(2), BlockState [GenerateRangeNoLimit 1 2 3 (round 0),
                                                                   GenerateRangeNoLimit 1 2 0 (round 0),
-                                                                  GenerateRangeNoLimit 1 2 3 (round 0)
+                                                                  GenerateRangeNoLimit 1 0 0 (round 0)
                                                                  ] (round 3))
                                            (runState multipleBlocks initState)
                               )
@@ -58,6 +58,7 @@ generateTests = TestList [TestLabel "oneArgTest" oneArgTest,
                           TestLabel "threeArgTest" threeArgTest,
                           TestLabel "fourArgTest" fourArgTest,
                           TestLabel "fiveArgNoLimitTest" fiveArgNoLimitTest,
-                          TestLabel "fiveArgTest" fiveArgTest
+                          TestLabel "fiveArgTest" fiveArgTest,
+                          TestLabel "multipleBlocksTest" multipleBlocksTest
                          ]
 
