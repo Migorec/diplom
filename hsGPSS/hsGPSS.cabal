@@ -58,4 +58,4 @@ executable tests
     
     other-modules: Tests.Simulation.HSGPSS.Blocks.Generate
     
-    build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, HUnit
+    build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, HUnit ==1.2.*
