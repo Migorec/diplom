@@ -51,7 +51,8 @@ library
                  Simulation.HSGPSS.Blocks.Generate,
                  Simulation.HSGPSS.Blocks.Advance,
                  Simulation.HSGPSS.Blocks.Terminate,
-                 Simulation.HSGPSS.Blocks.Transfer 
+                 Simulation.HSGPSS.Blocks.Transfer,
+                 Simulation.HSGPSS.Blocks.Queue 
   
   -- Other library packages from which modules are imported.
   build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*
@@ -62,6 +63,7 @@ executable tests
     other-modules: Simulation.HSGPSS.Tests.Blocks.Generate,
                    Simulation.HSGPSS.Tests.Blocks.Advance,
                    Simulation.HSGPSS.Tests.Blocks.Terminate,
-                   Simulation.HSGPSS.Tests.Blocks.Transfer
+                   Simulation.HSGPSS.Tests.Blocks.Transfer,
+                   Simulation.HSGPSS.Tests.Blocks.Queue
     
     build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, HUnit ==1.2.*    
