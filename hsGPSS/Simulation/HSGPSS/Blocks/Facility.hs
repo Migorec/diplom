@@ -13,6 +13,9 @@ release s = addBlock $ Release s
 return' :: String -> BlockStateMonad
 return' s = addBlock $ Return s
 
+favail :: String -> BlockStateMonad
+favail s = addBlock $ FAvail s
+
 data PR = PR
 
 class PreemptClass a where
