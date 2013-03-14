@@ -1,7 +1,11 @@
 *~
 hsGPSS/dist
 report/tex/rpz.pdf
+report/tex/presentation.pdf
 report/tex/inc
+report/doc/*#
+*.nav
+*.snm
 *.deps
 *.aux
 *.glo
