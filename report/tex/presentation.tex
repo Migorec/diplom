@@ -1,0 +1,53 @@
+\documentclass[utf8x]{beamer}
+\usepackage[english,russian]{babel}
+\usetheme{Pittsburgh}
+\usecolortheme{dove}
+\beamertemplatenavigationsymbolsempty
+
+\setbeamertemplate{footline}
+{%
+
+  \begin{beamercolorbox}[wd=0.95\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\raggedleft\large\insertframenumber
+  \end{beamercolorbox}%
+  
+}
+
+\defbeamertemplate*{title page}{customized}[1][]
+{
+  \vspace{-1cm}
+  \center\usebeamerfont{title}\textbf\inserttitle\par
+  \vspace{1cm}
+  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
+  \bigskip
+  \vspace{2cm}
+  \usebeamerfont{author}\insertauthor\par
+}
+
+\title{Разработка системы имитационного моделирования в форме библиотеки языка Haskell}
+\subtitle{Квалификационная работа}
+\author{Студент: Миникс Игорь Владимирович\newlineРуководитель: Степанов}
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}{Цель и задачи работы}
+
+\textbf{Целью работы} является нечто
+
+\hfill
+
+\textbf{Решаемые задачи}
+
+\begin{itemize}
+  \item itemized item 1
+  \item itemized item 2
+  \item itemized item 3
+\end{itemize}
+
+
+\end{frame}
+
+\end{document}
