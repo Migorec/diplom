@@ -57,6 +57,7 @@ executable tests
     main-is: Simulation/HSGPSS/Tests/Main.hs
     
     other-modules: Simulation.HSGPSS.Tests.Blocks.Generate,
-                   Simulation.HSGPSS.Tests.Blocks.Advance
+                   Simulation.HSGPSS.Tests.Blocks.Advance,
+                   Simulation.HSGPSS.Tests.Blocks.Terminate
     
     build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, HUnit ==1.2.*

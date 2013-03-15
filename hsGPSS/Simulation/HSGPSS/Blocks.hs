@@ -54,5 +54,7 @@ data Block = AdvanceRange         { mean :: Double,
                                     func :: Double -> Double,
                                     delay :: Double,
                                     priority :: Int
+                                  }
+            |Terminate            { countDec :: Int
                                   } deriving (Eq,Show)
 
