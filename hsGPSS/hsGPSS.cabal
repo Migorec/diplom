@@ -22,7 +22,7 @@ synopsis:            Simulation system with GPSS-like syntax.
 -- license:             
 
 -- The file containing the license text.
-license-file:        LICENSE
+--license-file:        LICENSE
 
 -- The package author(s).
 author:              MigOrec
@@ -47,8 +47,9 @@ library
   -- exposed-modules:     
   
   -- Modules included in this library but not exported.
-  -- other-modules:       
+  other-modules: Simulation.HSGPSS.Blocks,
+                 Simulation.HSGPSS.Blocks.Generate 
   
   -- Other library packages from which modules are imported.
-  build-depends:       base ==4.5.*
+  build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*
   
