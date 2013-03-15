@@ -7,6 +7,7 @@ PDFTRIMWHITE=utils/pdftrimwhite
 
 # Output file
 PDF=rpz.pdf
+PRES=presentation.pdf
 
 # Input paths
 ODT=odt
@@ -21,6 +22,7 @@ INC=$(TEX)/inc
 # Input files
 # no .tex allowed in MAINTEX!
 MAINTEX=rpz
+MAINPRES=presentation
 BIBFILE=$(TEX)/rpz.bib
 PREAMBLE=preamble-std.tex
 STYLES=$(TEX)/GostBase.clo $(TEX)/G7-32.sty $(TEX)/G7-32.cls $(TEX)/G2-105.sty
@@ -28,7 +30,7 @@ PARTS_TEX = $(wildcard $(TEX)/[0-9][0-9]-*.tex)
 
 
 
-all: $(PDF)
+all: $(PDF) $(PRES)
 
 .PHONY: all tarball clean
 
@@ -45,6 +47,9 @@ $(DEPS)/%-deps.mk: $(TEX)/% Makefile
 
 $(PDF): $(TEX)/$(MAINTEX).tex $(STYLES) $(BIBFILE) $(INC)/odt/titul.pdf $(INC)/odt/task.pdf $(INC)/odt/plan.pdf
 	cd tex && $(PDFLATEX) $(MAINTEX) && bibtex $(MAINTEX) && $(PDFLATEX) $(MAINTEX) && $(PDFLATEX) $(MAINTEX) && cp $(PDF) ..
+
+$(PRES): $(TEX)/$(MAINPRES).tex $(STYLES) 
+	cd tex && $(PDFLATEX) $(MAINPRES)  && $(PDFLATEX) $(MAINTEX) && $(PDFLATEX) $(MAINTEX) && cp $(PRES) ..
 
 $(INC)/odt/%.pdf: $(ODT)/%.odt
 	mkdir -p $(INC)/odt
