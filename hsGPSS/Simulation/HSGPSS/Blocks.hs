@@ -74,6 +74,7 @@ data Block = AdvanceRange         { mean :: Double,
                                    param :: Maybe Int,
                                    removeMode :: Bool
                                   }
+            |FAvail               {fName :: String}
             |Terminate            { countDec :: Int
                                   }
             |TransferUnconditional{newPlace :: Int

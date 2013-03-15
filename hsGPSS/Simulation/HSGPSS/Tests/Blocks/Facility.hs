@@ -23,7 +23,12 @@ returnTest = TestCase (assertEqual "for (runState (return' \"Name\") initState),
                                    (round(0), BlockState [Return "Name"] (round 1)) 
                                    (runState (return' "Name") initState )
                       )
-                      
+
+favailTest = TestCase (assertEqual "for (runState (faval \"Name\") initState),"
+                                  (round 0, BlockState [FAvail "Name"] (round 1))
+                                  (runState (favail "Name") initState)
+                     )
+                    
 preemptOneArgTest = TestCase (assertEqual "for (runState (preempt \"Name\") initState)," 
                                    (round(0), BlockState [PreemptIR "Name" Nothing Nothing False] (round 1)) 
                                    (runState (preempt "Name") initState )
@@ -87,6 +92,7 @@ preemptPRRemPar = TestCase (assertEqual "for (runState (preempt (\"Name\",PR,5,(
 facilityTests = TestList [ TestLabel "seizeTest" seizeTest,
                            TestLabel "releaseTest" releaseTest,
                            TestLabel "returnTest" returnTest,
+                           TestLabel "favailTest" favailTest,
                            TestLabel "preemptOneArgTest" preemptOneArgTest,
                            TestLabel "preemptTwoArgTest" preemptTwoArgTest,
                            TestLabel "preemptIRDestTest" preemptIRDestTest,
