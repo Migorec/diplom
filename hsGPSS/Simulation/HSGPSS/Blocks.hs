@@ -56,5 +56,30 @@ data Block = AdvanceRange         { mean :: Double,
                                     priority :: Int
                                   }
             |Terminate            { countDec :: Int
+                                  }
+            |TransferUnconditional{newPlace :: Int
+                                  }
+            |TransferFractional1  {probability :: Double,
+                                   newPlace :: Int
+                                  }
+            |TransferFractional2  {probability :: Double,
+                                   firstPlace :: Int,
+                                   secondlace :: Int
+                                  }
+            |TransferBoth         {firstPlace :: Int,
+                                   secondPlace :: Int
+                                  }
+            |TransferAll          {firstPlace :: Int,
+                                   lastPlace ::Int,
+                                   step :: Int
+                                  } 
+            |TransferPick         {firstPlace ::Int,
+                                   lastPlace :: Int
+                                  } 
+            |TransferParameter    {placemaker :: String,
+                                   increment :: Int
+                                  }
+            |TransferSubroutine   {newPlace :: Int,
+                                   placemaker :: String
                                   } deriving (Eq,Show)
 
