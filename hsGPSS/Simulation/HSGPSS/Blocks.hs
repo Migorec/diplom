@@ -27,7 +27,13 @@ instance Eq (Double->Double) where
     (==) _ _ = True
 
 -- ^ Tип данных для блоков
-data Block = GenerateRangeGeneral { mean :: Double,
+data Block = AdvanceRange         { mean :: Double,
+                                    halfRange :: Double
+                                  }
+            |AdvanceFunc          { mean :: Double,
+                                    func :: Double -> Double
+                                  }
+            |GenerateRangeGeneral { mean :: Double,
                                     halfRange :: Double,
                                     delay :: Double,
                                     limit :: Int,
