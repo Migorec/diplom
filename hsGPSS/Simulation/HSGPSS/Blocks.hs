@@ -61,6 +61,19 @@ data Block = AdvanceRange         { mean :: Double,
             |Depart               { qName :: String,
                                     dec :: Int
                                   }
+            |Seize                {fName :: String}
+            |Release              {fName :: String}
+            |Return               {fName :: String}
+            |PreemptPR            {fName :: String,
+                                   nDest :: Maybe Int,
+                                   param :: Maybe Int,
+                                   removeMode :: Bool
+                                  }
+            |PreemptIR            {fName :: String,
+                                   nDest :: Maybe Int,
+                                   param :: Maybe Int,
+                                   removeMode :: Bool
+                                  }
             |Terminate            { countDec :: Int
                                   }
             |TransferUnconditional{newPlace :: Int
