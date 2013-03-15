@@ -34,7 +34,7 @@ data Block = GenerateRangeGeneral { mean :: Double,
                                     priority :: Int
                                   }
             |GenerateRangeNoLimit { mean :: Double,
-                                    halgeRange :: Double,
+                                    halfRange :: Double,
                                     delay :: Double,
                                     priority :: Int
                                   } 
