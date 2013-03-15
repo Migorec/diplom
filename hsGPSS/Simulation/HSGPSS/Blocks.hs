@@ -55,6 +55,9 @@ data Block = AdvanceRange         { mean :: Double,
                                     delay :: Double,
                                     priority :: Int
                                   }
+            |Queue                { qName :: String,
+                                    inc :: Int
+                                  }
             |Terminate            { countDec :: Int
                                   }
             |TransferUnconditional{newPlace :: Int
