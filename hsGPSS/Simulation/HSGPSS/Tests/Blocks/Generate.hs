@@ -1,6 +1,6 @@
 {-# LANGUAGE RebindableSyntax, NoImplicitPrelude #-}
 
-module Tests.Simulation.HSGPSS.Blocks.Generate (generateTests) where
+module Simulation.HSGPSS.Tests.Blocks.Generate (generateTests) where
 
 import Simulation.HSGPSS.Blocks
 import Simulation.HSGPSS.Blocks.Generate

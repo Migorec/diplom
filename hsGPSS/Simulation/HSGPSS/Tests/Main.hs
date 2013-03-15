@@ -1,6 +1,6 @@
 module Main where
 
-import Tests.Simulation.HSGPSS.Blocks.Generate
+import Simulation.HSGPSS.Tests.Blocks.Generate
 import Test.HUnit
 
 main = runTestTT generateTests
