@@ -45,7 +45,7 @@ $(DEPS)/%-deps.mk: $(TEX)/% Makefile
 	mkdir -p $(DEPS)
 	(echo -n "$(PDF): " ; $(TD) -print=fi -format=1 $< | grep -v '^#' | xargs echo) > $@
 
-$(PDF): $(TEX)/$(MAINTEX).tex $(STYLES) $(BIBFILE) $(INC)/odt/titul.pdf $(INC)/odt/task.pdf $(INC)/odt/plan.pdf
+$(PDF): $(TEX)/$(MAINTEX).tex $(STYLES) $(BIBFILE) 
 	cd tex && $(PDFLATEX) $(MAINTEX) && bibtex $(MAINTEX) && $(PDFLATEX) $(MAINTEX) && $(PDFLATEX) $(MAINTEX) && cp $(PDF) ..
 
 $(PRES): $(TEX)/$(MAINPRES).tex $(STYLES) 
