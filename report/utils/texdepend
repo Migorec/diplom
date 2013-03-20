@@ -72,6 +72,7 @@ $def_print = 'ipfbs';         # default lists to print
 $include_graphics = join('|',
       qw(includegraphics includepdf myincludegraphics epsfbox epsffile lstinputlisting));
 
+
 # How to search for files on the various TeX paths:
 
 # If teTeX is installed, use kpsetool to locate tex/bst/sty files before
