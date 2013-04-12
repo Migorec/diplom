@@ -70,7 +70,8 @@ $def_print = 'ipfbs';         # default lists to print
 
 # In this version, we only handle:
 $include_graphics = join('|',
-      qw(includegraphics myincludegraphics epsfbox epsffile lstinputlisting));
+      qw(includegraphics includepdf myincludegraphics epsfbox epsffile lstinputlisting));
+
 
 # How to search for files on the various TeX paths:
 
