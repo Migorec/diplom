@@ -21,6 +21,10 @@ addBlock newBlock =
 
 type Blocks = Array Int Block
 
+createModel :: BlockStateMonad -> Blocks
+createModel st = let (_, BlockState bs c) = runState st initState 
+                 in listArray (0,c-1) (reverse bs)
+
 type BlockStateMonad = State BlockState Int
 
 instance Eq (Double->Double) where

@@ -44,7 +44,9 @@ cabal-version:       >=1.8
 
 library
   -- Modules exported by the library.
-  -- exposed-modules:     
+  exposed-modules: Simulation.HSGPSS
+                   Simulation.HSGPSS.Prelude
+                   Simulation.HSGPSS.Random.Functions
   
   -- Modules included in this library but not exported.
   other-modules: Simulation.HSGPSS.Blocks,
@@ -54,10 +56,25 @@ library
                  Simulation.HSGPSS.Blocks.Transfer,
                  Simulation.HSGPSS.Blocks.Queue,
                  Simulation.HSGPSS.Blocks.Depart,
-                 Simulation.HSGPSS.Blocks.Facility 
+                 Simulation.HSGPSS.Blocks.Facility,
+                 Simulation.HSGPSS.Simulate,
+                 Simulation.HSGPSS.MyArray,
+                 Simulation.HSGPSS.MyMaps,
+                 Simulation.HSGPSS.Facility,
+                 Simulation.HSGPSS.Queue,
+                 Simulation.HSGPSS.SimulationState,
+                 Simulation.HSGPSS.Transaction,
+                 Simulation.HSGPSS.Simulate.Advance,
+                 Simulation.HSGPSS.Simulate.Generate,
+                 Simulation.HSGPSS.Simulate.Queue,
+                 Simulation.HSGPSS.Simulate.Seize,
+                 Simulation.HSGPSS.Simulate.Transfer,
+                 Simulation.HSGPSS.Chains
+                 Simulation.HSGPSS.Random
+             
   
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*
+  build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, containers ==0.5.*, random ==1.0.*
   
 executable tests
     main-is: Simulation/HSGPSS/Tests/Main.hs
@@ -68,6 +85,8 @@ executable tests
                    Simulation.HSGPSS.Tests.Blocks.Transfer,
                    Simulation.HSGPSS.Tests.Blocks.Queue,
                    Simulation.HSGPSS.Tests.Blocks.Depart,
-                   Simulation.HSGPSS.Tests.Blocks.Facility
+                   Simulation.HSGPSS.Tests.Blocks.Facility,
+                   Simulation.HSGPSS.Tests.Blocks,
+                   Simulation.HSGPSS.Tests.Chains
     
-    build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, HUnit ==1.2.*    
+    build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, HUnit ==1.2.*,  containers ==0.5.*, random ==1.0.*, statistics ==0.10.*, vector ==0.10.*

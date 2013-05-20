@@ -73,7 +73,7 @@ $(INC)/svg/%.pdf : $(SVG)/%.svg
 
 # .eps --> .pdf
 $(INC)/%.pdf: $(INC)/%.eps
-	epstopdf --outfile $@ $<
+	epstopdf  --outfile $@ $<
 
 
 # .dot -> .tex (via dot2tex)

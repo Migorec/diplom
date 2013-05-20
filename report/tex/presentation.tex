@@ -64,22 +64,117 @@
 
 % Команды section и subsection начинают новый слайд.
 
-\section{Цель и задачи работы}
+\section{Цель работы}
 
-\emph{Целью работы} является получение диплома. 
+\emph{Целью работы} является создание системы имитационного
+моделирования, основанной на принципах и синтаксисе GPSS, однако позволяющей разрабатывать модели как часть более крупной программы.
 
-\subsubsection{Решаемые задачи}
+
+\section{Решаемые задачи}
 
 \begin{enumerate}
-\item Выбрать тему.
-\item Написать диплом.
-\item Защитить диплом.
-\item Получить диплом.
-\item ...
-\item PROFIT
+\item Изучить принципы функционирования и синтаксис описания моделей в GPSS.
+\item Разработать синтаксис описания моделей схожий с синтаксисом
+GPSS, но согласующийся с синтаксисом Haskell.
+\item Выбрать подмножество блоков GPSS, которые следует реализовать
+в системе.
+\item Реализовать алгоритмы описания моделей и имитационного моделирования.
+\item Провести тестирование разработанного программного обеспечения.
 \end{enumerate}
 
 
+%\section{Объекты GPSS}
+%\begin{enumerate}
+%\item Транзакты.
+%\item Блоки.
+%\item Устройства.
+%\item Хранилища (памяти).
+%\item Очереди.
+%\item Ключи.
+%\item Таблицы.
+%\item И др.
+%\end{enumerate}
 
+%\section{Атрибуты транзактов}
+%\begin{enumerate}
+%\item Параметры.
+%\item Приоритет.
+%\item Текущий  блок.
+%\item Следующий блок.
+%\item Состояние.
+%\end{enumerate}
+
+
+%\section{Диаграмма состояний транзакта}
+
+%\begin{center}
+%\includegraphics[height=0.87\textheight]{inc/dia/transactionState}
+%\end{center}%
+
+%\section{Управление процессом моделирования в GPSS}
+
+%\begin{center}
+%\includegraphics[height=0.8\textheight]{inc/dia/gpss}
+%\end{center}
+
+\section{Пример моделируемой системы}
+
+\includegraphics[width=\textwidth]{inc/dia/main}
+
+
+\section{Подмножество реализуемых блоков}
+
+\begin{enumerate}
+\item GENERATE, TERMINATE~--- создание и уничтожение заявок.
+\item ADVANCE~--- задержка продвижения транзактов
+\item SEIZE, RELEASE~--- занятие и освобождение устройств.
+\item ENTER, LEAVE~--- занятие и освобождение хранилищ.
+\item PREEMPT, RETURN~--- занятие и освобождение устройств с абсолютным приоритетом.
+\item TRANSFER~--- изменение порядка следования транзактов.
+\end{enumerate}
+
+\section{Опиание модели как вычисление с состоянием}
+
+\includegraphics[width=\textwidth]{inc/dia/StateIDEF}
+
+\section{Синтаксис описания моделей}
+
+\begin{minipage}[m]{.49\textwidth}
+\centerline{GPSS}
+
+\begin{verbatim}
+
+
+GENERATE 10,2
+QUEUE WaitingLine
+SEIZE Worker
+DEPART WaitingLine
+ADVANCE 3
+RELEASE Worker
+TERMINATE 1
+
+\end{verbatim}
+
+
+\end{minipage}
+%
+\begin{minipage}[m]{.49\textwidth}
+\vspace{1cm}
+\centerline{HASKELL}
+
+\begin{verbatim}
+
+model = 
+    do generate (10,2)
+       queue "WaitingLine"
+       seize "Worker"
+       depart "WaitingLine"
+       advance 3
+       release "Worker"
+       terminate 1
+
+\end{verbatim}
+
+\end{minipage}
 \end{document}
 
