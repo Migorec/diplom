@@ -3,7 +3,7 @@ hsGPSS/dist
 report/tex/rpz.pdf
 report/tex/presentation.pdf
 report/tex/inc
-report/doc/*#
+report/odt/*#
 *.nav
 *.snm
 *.deps
