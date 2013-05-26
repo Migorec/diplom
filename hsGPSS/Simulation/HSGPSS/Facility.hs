@@ -8,10 +8,12 @@ data SFacility = SFacility { isAvailable :: Bool,
                              captureTime :: Double, --суммарно время, в течении которого устройство было занято
                              lastCaptureTime :: Double, -- момент времени, когда устройство стало занято в последний раз
                              utilization :: Double,
-                             dc :: DC
+                             dc :: DC,
+                             ic :: IC
                            } deriving (Eq, Show)
                            
-initFacility = SFacility True 0 0 0 0 []
+initFacility :: SFacility
+initFacility = SFacility True 0 0 0 0 [] []
 
 queue :: Transaction -> SFacility -> SFacility
 queue t sf = sf{dc = addPC (dc sf) t}

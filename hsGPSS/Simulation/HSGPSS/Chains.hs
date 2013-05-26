@@ -20,3 +20,10 @@ addPC :: PriorityChain -> Transaction -> PriorityChain
 addPC pc transact = before ++ (transact:after)
     where p = priority transact
           (before, after) = span (\x -> priority x >= p) pc
+          
+type IC = [(Double, Transaction)]
+
+addIC :: IC -> (Double, Transaction) -> IC
+addIC ic (t, transact) = before ++ ((t,transact):after)
+    where p = priority transact
+          (before, after) = span (\(_,x) -> priority x > p) ic
