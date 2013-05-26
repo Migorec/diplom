@@ -9,5 +9,5 @@ data Transaction = Transaction { currentBlock :: Int,
                                  priority :: Int,
                                  state :: TransactionState,
                                  params :: IntMap Double,
-                                 owhership :: String
+                                 ownership :: String
                                } deriving (Eq, Show)
