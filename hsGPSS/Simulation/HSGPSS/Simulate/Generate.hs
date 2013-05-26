@@ -11,14 +11,14 @@ import Simulation.HSGPSS.Random
 generateNoLimit :: SimulationState -> Int -> Double -> Int -> Double -> SimulationState
 generateNoLimit ss ix d p t = 
     let time = if currentTime ss == 0 then t + d else t
-        transact = Transaction ix (ix+1) p Passive empty
+        transact = Transaction ix (ix+1) p Passive empty ""
     in ss{fec = addFE (fec ss) (time + currentTime ss, transact)}
 
 generateGeneral :: SimulationState -> Int -> Block -> Double -> SimulationState
 generateGeneral ss ix b t = 
     if limit b > 0
     then let time = if currentTime ss == 0 then t + delay b else t
-             transact = Transaction ix (ix+1) (B.priority b) Passive empty
+             transact = Transaction ix (ix+1) (B.priority b) Passive empty ""
          in ss{fec = addFE (fec ss) (time + currentTime ss,transact), blocks = changeElem (blocks ss) ix (SBlock b ix)}
     else ss
 

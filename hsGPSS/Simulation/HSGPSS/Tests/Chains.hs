@@ -7,8 +7,11 @@ import Data.IntMap
 import Simulation.HSGPSS.Chains
 import Simulation.HSGPSS.Transaction
 
-defTransact = Transaction 0 0 0 Active empty
-specTransact = Transaction 1 0 0 Active empty
+defTransact :: Transaction
+defTransact = Transaction 0 0 0 Active empty ""
+
+specTransact :: Transaction
+specTransact = Transaction 1 0 0 Active empty ""
 
 emptyFEC = TestCase (assertEqual "for (addFE [] (1,defTransact))," 
                                    ([(1,defTransact)]) 

@@ -8,5 +8,6 @@ data Transaction = Transaction { currentBlock :: Int,
                                  nextBlock :: Int,
                                  priority :: Int,
                                  state :: TransactionState,
-                                 params :: IntMap Double
+                                 params :: IntMap Double,
+                                 owhership :: String
                                } deriving (Eq, Show)
