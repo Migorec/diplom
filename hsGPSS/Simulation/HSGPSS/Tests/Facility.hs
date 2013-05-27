@@ -8,21 +8,21 @@ import qualified Control.Exception as E
 newtype ApproxSFacility = ASF SFacility deriving Show
 
 instance Eq ApproxSFacility where
-    (ASF (SFacility iA1 iI1 cc1 ct1 lcc1 u1 _ _ _)) == (ASF (SFacility iA2 iI2 cc2 ct2 lcc2 u2 _ _ _)) =
-        (iA1==iA2) && (iI1==iI2) && (cc1 == cc2) && (abs (ct1 - ct2) < 0.000001) && (abs (lcc1 - lcc2) < 0.000001) && (abs (u1 - u2) < 0.000001)
+    (ASF (SFacility iA1 iI1 cc1 ct1 lcc1 u1 op1 _ _ _)) == (ASF (SFacility iA2 iI2 cc2 ct2 lcc2 u2 op2 _ _ _)) =
+        (iA1==iA2) && (iI1==iI2) && (cc1 == cc2) && (abs (ct1 - ct2) < 0.000001) && (abs (lcc1 - lcc2) < 0.000001) && (abs (u1 - u2) < 0.000001) && (op1 == op2)
         
-testSeq = [capture 1, release 2, capture 3, release 5, capture 6, release 7, capture 9, release 10]
+testSeq = [capture 1 1, release 2, capture 3 2, release 5, capture 6 3, release 7, capture 9 4, release 10]
 
 
 goodSeq = TestCase (assertEqual "for snd $ mapAccumL (\a f -> let r = f a in (r,ASF r)) initFacility testSeq),"
-                                [ASF $ SFacility False False 1 0 1 0 [] [] [],
-                                 ASF $ SFacility True False 1 1 1 0.5 [] [] [],
-                                 ASF $ SFacility False False 2 1 3 (1/3) [] [] [],
-                                 ASF $ SFacility True False 2 3 3 (3/5) [] [] [],
-                                 ASF $ SFacility False False 3 3 6 (3/6) [] [] [],
-                                 ASF $ SFacility True False 3 4 6 (4/7) [] [] [],
-                                 ASF $ SFacility False False 4 4 9 (4/9) [] [] [],
-                                 ASF $ SFacility True False 4 5 9 0.5 [] [] []
+                                [ASF $ SFacility False False 1 0 1 0 1 [] [] [],
+                                 ASF $ SFacility True False 1 1 1 0.5 0 [] [] [],
+                                 ASF $ SFacility False False 2 1 3 (1/3) 2 [] [] [],
+                                 ASF $ SFacility True False 2 3 3 (3/5) 0 [] [] [],
+                                 ASF $ SFacility False False 3 3 6 (3/6) 3 [] [] [],
+                                 ASF $ SFacility True False 3 4 6 (4/7) 0 [] [] [],
+                                 ASF $ SFacility False False 4 4 9 (4/9) 4 [] [] [],
+                                 ASF $ SFacility True False 4 5 9 0.5 0 [] [] []
                                 ]
                                 (snd $ mapAccumL (\a f -> let r = f a in (r,ASF r)) initFacility testSeq)
                   )
