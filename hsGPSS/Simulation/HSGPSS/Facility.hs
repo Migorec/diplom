@@ -27,8 +27,8 @@ sInterrupt r sf = sf{ic = addIC (ic sf) r}
 setInterrupt :: SFacility -> SFacility
 setInterrupt sf = sf{isInterrupted = True}
 
-usetInterrupt :: SFacility -> SFacility
-usetInterrupt sf = sf{isInterrupted = False}
+unsetInterrupt :: SFacility -> SFacility
+unsetInterrupt sf = sf{isInterrupted = False}
 
 
 pend :: Transaction -> SFacility -> SFacility
