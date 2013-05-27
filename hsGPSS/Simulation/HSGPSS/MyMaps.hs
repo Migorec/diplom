@@ -25,4 +25,10 @@ instance DefaultUpdateClass (M.Map String SQueue) SQueue String where
                                 Nothing -> M.insert key (f initQueue) m
                                 Just v  -> M.adjust f key m
         where val = M.lookup key m
+        
+instance DefaultUpdateClass (IM.IntMap Double) Double Int where
+    defaultUpdate f key m = case val of
+                                Nothing -> IM.insert key (f 0) m
+                                Just v  -> IM.adjust f key m
+        where val = IM.lookup  key m
 

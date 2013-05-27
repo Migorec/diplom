@@ -17,6 +17,7 @@ import Simulation.HSGPSS.Simulate.Advance
 import Simulation.HSGPSS.Simulate.Queue
 import Simulation.HSGPSS.Simulate.Transfer
 import Simulation.HSGPSS.Simulate.Seize
+import Simulation.HSGPSS.Simulate.Preempt
 import Debug.Trace
 
 
@@ -50,6 +51,8 @@ moveTransaction t ss' =
         TransferAll _ _ _ -> transfer ss sblock t
         Seize _ -> seize ss sblock t
         Release _ -> release ss sblock t
+        PreemptIR _ _ _ _ -> preempt ss sblock t
+        PreemptPR _ _ _ _ -> preempt ss sblock t
         GenerateRangeNoLimit _ _ _ _ -> error "Transaction can't enter GENERATE block!"
         GenerateRangeGeneral _ _ _ _ _ -> error "Transaction can't enter GENERATE block!"
         GenerateFuncGeneral _ _ _ _ _ -> error "Transaction can't enter GENERATE block!"
