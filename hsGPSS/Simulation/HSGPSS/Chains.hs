@@ -21,7 +21,8 @@ addPC pc transact = before ++ (transact:after)
     where p = priority transact
           (before, after) = span (\x -> priority x >= p) pc
 
-data IR = IRF Double Transaction | IRC Transaction deriving (Eq, Show)
+
+type IR = (Maybe Double, Transaction)
 
 findFInt :: FEC -> String -> (Maybe (Double, Transaction), FEC)
 findFInt [] _ = (Nothing, [])
@@ -35,18 +36,18 @@ findCInt (t:ts) f | ownership t == f = (Just t, ts)
                   | otherwise = let (r, ts') = findCInt ts f
                                 in (r,t:ts')
 
-findInt :: FEC -> CEC -> String -> (IR,FEC,CEC)
+findInt :: FEC -> CEC -> String -> ((Maybe Double, Transaction),FEC,CEC)
 findInt fec cec f = 
     case findFInt fec f of
-     (Just (t,transact), fec') -> (IRF t transact, fec', cec)
+     (Just (t,transact), fec') -> ((Just t, transact), fec', cec)
      _ -> case findCInt cec f of
-           (Just transact, cec') -> (IRC transact, fec, cec')
+           (Just transact, cec') -> ((Nothing, transact), fec, cec')
            _ -> error "facility busy, but who did it?"
           
-type IC = [(Double, Transaction)]
+type IC = [(Maybe Double, Transaction)]
 
 
-addIC :: IC -> (Double, Transaction) -> IC
+addIC :: IC -> (Maybe Double, Transaction) -> IC
 addIC ic (t, transact) = before ++ ((t,transact):after)
     where p = priority transact
           (before, after) = span (\(_,x) -> priority x > p) ic
