@@ -7,6 +7,7 @@ import Simulation.HSGPSS.Tests.Blocks.Transfer
 import Simulation.HSGPSS.Tests.Blocks.Queue
 import Simulation.HSGPSS.Tests.Blocks.Depart
 import Simulation.HSGPSS.Tests.Blocks.Facility
+import Simulation.HSGPSS.Tests.Blocks.Storage
 import Simulation.HSGPSS.Tests.Blocks
 import Simulation.HSGPSS.Tests.Chains
 import Simulation.HSGPSS.Tests.MyMaps
@@ -24,6 +25,7 @@ tests = TestList [ TestLabel "generateTests" generateTests,
                    TestLabel "queueTests" queueTests,
                    TestLabel "departTests" departTests,
                    TestLabel "facilityTests" facilityTests,
+                   TestLabel "storageTests" storageTests,
                    TestLabel "blocksTests" blocksTests,
                    TestLabel "chainsTests" chainsTests,
                    TestLabel "myMapsTests" myMapsTests,

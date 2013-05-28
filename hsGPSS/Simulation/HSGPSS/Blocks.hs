@@ -20,6 +20,11 @@ addBlock newBlock =
     do BlockState b c s <- get
        put $ BlockState (newBlock:b) (c+1) s
        return c
+       
+addStorage :: Storage -> State BlockState ()
+addStorage newSt = 
+    do BlockState b c s <- get
+       put $ BlockState b c (newSt:s)
 
 type Blocks = Array Int Block
 
@@ -75,6 +80,10 @@ data Block = AdvanceRange         { mean :: Double,
                                   }
             |Seize                {fName :: String}
             |Release              {fName :: String}
+            |Enter                {sName :: String,
+                                   dec   :: Int}
+            |Leave                {sName :: String,
+                                   inc   :: Int}
             |Return               {fName :: String}
             |PreemptPR            {fName :: String,
                                    nDest :: Maybe Int,
