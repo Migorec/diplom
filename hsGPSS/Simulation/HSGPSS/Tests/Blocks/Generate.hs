@@ -9,32 +9,32 @@ import Control.Monad.State
 import Simulation.HSGPSS.Prelude
 
 oneArgTest = TestCase (assertEqual "for (runState (generate 1) initState)," 
-                                   (round(0), BlockState [GenerateRangeNoLimit 1 0 0 (round 0)] (round 1)) 
+                                   (round(0), BlockState [GenerateRangeNoLimit 1 0 0 (round 0)] (round 1) []) 
                                    (runState (generate 1) initState )
                       )
 
 twoArgTest = TestCase (assertEqual "for (runState (generate (1, 2)) initState)," 
-                                   (round(0), BlockState [GenerateRangeNoLimit 1 2 0 (round 0)] (round 1)) 
+                                   (round(0), BlockState [GenerateRangeNoLimit 1 2 0 (round 0)] (round 1) []) 
                                    (runState (generate (1, 2)) initState)
                       )
 
 threeArgTest = TestCase (assertEqual "for (runState (generate (1, 2, 3)) initState)," 
-                                     (round(0), BlockState [GenerateRangeNoLimit 1 2 3 (round 0)] (round 1)) 
+                                     (round(0), BlockState [GenerateRangeNoLimit 1 2 3 (round 0)] (round 1) []) 
                                      (runState (generate (1, 2, 3)) initState)
                         )
 
 fourArgTest = TestCase (assertEqual "for (runState (generate (1, 2, 3, 4)) initState)," 
-                                   (round(0), BlockState [GenerateRangeGeneral 1 2 3 (round 4) (round 0)] (round 1)) 
+                                   (round(0), BlockState [GenerateRangeGeneral 1 2 3 (round 4) (round 0)] (round 1) []) 
                                    (runState (generate (1, 2, 3, 4)) initState)
                       )
 
 fiveArgNoLimitTest = TestCase (assertEqual "for (runState (generate (1, 2, 3, (), 5)) initState)," 
-                                   (round(0), BlockState [GenerateRangeNoLimit 1 2 3 (round 5)] (round 1)) 
+                                   (round(0), BlockState [GenerateRangeNoLimit 1 2 3 (round 5)] (round 1) []) 
                                    (runState (generate (1, 2, 3, (), 5)) initState)
                               )
                               
 fiveArgTest = TestCase (assertEqual "for (runState (generate (1, 2, 3, 4, 5)) initState)," 
-                                   (round(0), BlockState [GenerateRangeGeneral 1 2 3 (round 4) (round 5)] (round 1)) 
+                                   (round(0), BlockState [GenerateRangeGeneral 1 2 3 (round 4) (round 5)] (round 1) []) 
                                    (runState (generate (1, 2, 3, 4, 5)) initState)
                       )
 
@@ -49,7 +49,7 @@ multipleBlocksTest = TestCase (assertEqual "for (runState multipleBlocks initSta
                                            (round(2), BlockState [GenerateRangeNoLimit 1 2 3 (round 0),
                                                                   GenerateRangeNoLimit 1 2 0 (round 0),
                                                                   GenerateRangeNoLimit 1 0 0 (round 0)
-                                                                 ] (round 3))
+                                                                 ] (round 3) [])
                                            (runState multipleBlocks initState)
                               )
 

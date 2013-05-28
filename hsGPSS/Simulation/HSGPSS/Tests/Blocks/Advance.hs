@@ -9,12 +9,12 @@ import Control.Monad.State
 import Simulation.HSGPSS.Prelude
 
 oneArgTest = TestCase (assertEqual "for (runState (advance 1) initState)," 
-                                   (round(0), BlockState [AdvanceRange 1 0] (round 1)) 
+                                   (round(0), BlockState [AdvanceRange 1 0] (round 1) []) 
                                    (runState (advance 1) initState )
                       )
 
 twoArgTest = TestCase (assertEqual "for (runState (advance 1 2) initState)," 
-                                   (round(0), BlockState [AdvanceRange 1 2] (round 1)) 
+                                   (round(0), BlockState [AdvanceRange 1 2] (round 1) []) 
                                    (runState (advance (1,2)) initState )
                       )
                       

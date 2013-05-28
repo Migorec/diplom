@@ -9,7 +9,7 @@ import Control.Monad.State
 import Simulation.HSGPSS.Prelude
 
 oneArgTest = TestCase (assertEqual "for (runState (terminate 1) initState)," 
-                                   (round(0), BlockState [Terminate (round 1)] (round 1)) 
+                                   (round(0), BlockState [Terminate (round 1)] (round 1) []) 
                                    (runState (terminate 1) initState )
                       )
                       

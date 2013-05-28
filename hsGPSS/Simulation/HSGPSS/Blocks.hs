@@ -8,27 +8,35 @@ import Control.Monad.State
 import Data.Array
 
 data BlockState = BlockState {blocks :: [Block],
-                              count :: Int
+                              count :: Int,
+                              storages :: [Storage]
                              } deriving (Eq, Show)
                              
-initState = BlockState [] 0
+initState :: BlockState                             
+initState = BlockState [] 0 []
 
 addBlock :: Block -> BlockStateMonad
 addBlock newBlock = 
-    do BlockState b c <- get
-       put $ BlockState (newBlock:b) (c+1)
+    do BlockState b c s <- get
+       put $ BlockState (newBlock:b) (c+1) s
        return c
 
 type Blocks = Array Int Block
 
+
 createModel :: BlockStateMonad -> Blocks
-createModel st = let (_, BlockState bs c) = runState st initState 
+createModel st = let (_, BlockState bs c _) = runState st initState 
                  in listArray (0,c-1) (reverse bs)
+
 
 type BlockStateMonad = State BlockState Int
 
 instance Eq (Double->Double) where
     (==) _ _ = True
+
+data Storage = Storage { name :: String,
+                         capacity :: Int
+                       } deriving (Eq, Show)
 
 -- ^ Tип данных для блоков
 data Block = AdvanceRange         { mean :: Double,

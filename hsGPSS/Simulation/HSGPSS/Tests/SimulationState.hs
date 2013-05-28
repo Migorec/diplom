@@ -20,7 +20,7 @@ model = do generate (5,2)
 
 
 ssInitTest = TestCase (assertEqual "for (ssInit model 10)," 
-                                   (SimulationState [] [] (listArray (round 0,round 2) [SBlock (GenerateRangeNoLimit 5 2 0 (round 0)) $ round 0, SBlock (AdvanceRange 3 1) $ round 1, SBlock (Terminate (round 1)) $ round 2]) empty empty (round 10) 0 ) 
+                                   (SimulationState [] [] (listArray (round 0,round 2) [SBlock (GenerateRangeNoLimit 5 2 0 (round 0)) $ round 0, SBlock (AdvanceRange 3 1) $ round 1, SBlock (Terminate (round 1)) $ round 2]) empty empty empty (round 10) 0 ) 
                                    (ssInit model $ round 10)
                            )
 
