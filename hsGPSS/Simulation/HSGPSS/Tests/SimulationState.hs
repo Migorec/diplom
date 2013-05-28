@@ -8,7 +8,7 @@ import Simulation.HSGPSS.Blocks.Advance
 import Simulation.HSGPSS.Blocks.Terminate
 import Simulation.HSGPSS.Blocks.Storage
 import Simulation.HSGPSS.SimulationState
-import Simulation.HSGPSS.Storage
+import Simulation.HSGPSS.Storage hiding (enter, leave)
 import Test.HUnit
 import Data.Array
 import Data.Map

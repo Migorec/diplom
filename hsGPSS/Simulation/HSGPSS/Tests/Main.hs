@@ -16,6 +16,7 @@ import Simulation.HSGPSS.Tests.MyArray
 import Simulation.HSGPSS.Tests.Queue
 import Simulation.HSGPSS.Tests.Facility
 import Simulation.HSGPSS.Tests.Random
+import Simulation.HSGPSS.Tests.Storage
 import Test.HUnit
 
 tests = TestList [ TestLabel "generateTests" generateTests,
@@ -33,7 +34,8 @@ tests = TestList [ TestLabel "generateTests" generateTests,
                    TestLabel "myArrayTest" myMapsTests,
                    TestLabel "sQueueTests" sQueueTests,
                    TestLabel "sFacilityTests" sFacilityTests,
-                   TestLabel "randomTests" randomTests
+                   TestLabel "randomTests" randomTests,
+                   TestLabel "sStorageTests" sStorageTests
                  ]
 
 main = runTestTT tests
