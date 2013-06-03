@@ -57,6 +57,7 @@ library
                  Simulation.HSGPSS.Blocks.Queue,
                  Simulation.HSGPSS.Blocks.Depart,
                  Simulation.HSGPSS.Blocks.Facility,
+                 Simulation.HSGPSS.Blocks.Storage,
                  Simulation.HSGPSS.Simulate,
                  Simulation.HSGPSS.MyArray,
                  Simulation.HSGPSS.MyMaps,
@@ -64,11 +65,15 @@ library
                  Simulation.HSGPSS.Queue,
                  Simulation.HSGPSS.SimulationState,
                  Simulation.HSGPSS.Transaction,
+                 Simulation.HSGPSS.Storage,
+                 Simulation.HSGPSS.SimulationResult,
                  Simulation.HSGPSS.Simulate.Advance,
                  Simulation.HSGPSS.Simulate.Generate,
                  Simulation.HSGPSS.Simulate.Queue,
                  Simulation.HSGPSS.Simulate.Seize,
                  Simulation.HSGPSS.Simulate.Transfer,
+                 Simulation.HSGPSS.Simulate.Preempt,
+                 Simulation.HSGPSS.Simulate.Enter,  
                  Simulation.HSGPSS.Chains
                  Simulation.HSGPSS.Random
              

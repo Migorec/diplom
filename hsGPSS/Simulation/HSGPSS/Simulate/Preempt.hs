@@ -42,7 +42,7 @@ preempt' ss (SBlock (PreemptPR f _ p False) ix) transact =
     then ss {facilities = defaultUpdate (F.capture (currentTime ss) (priority transact)) f $ facilities ss,
              cec = transact{currentBlock = ix, nextBlock = ix + 1, ownership = f} : cec ss}
     else if  (ownerPriority $ facilities ss ! f) >= priority transact
-         then ss {facilities = defaultUpdate (pend transact) f $ facilities ss}
+         then error "PEND?!!"--ss {facilities = defaultUpdate (pend transact) f $ facilities ss}
          else let ((mt,it),fec',cec') = findInt (fec ss) (cec ss) f
                   mt' = fmap (\x -> x - currentTime ss) mt 
                   it' = case (p,mt') of
@@ -117,7 +117,7 @@ sReturn' :: SimulationState -> SBlock -> Transaction -> SimulationState
 sReturn' ss (SBlock (Return f) ix) transact = 
     let sf = facilities ss ! f
         t  = currentTime ss
-    in case dc sf of
+    in case pc sf of
         (dt:dcs) -> ss {facilities = (defaultUpdate (\f -> F.capture t (priority dt) $ 
                                                            F.release t f{dc = dcs}) f $ facilities ss),
                         cec = transact {currentBlock = ix, nextBlock = ix + 1, ownership=""} :
@@ -133,8 +133,8 @@ sReturn' ss (SBlock (Return f) ix) transact =
                                                                        isInterrupted = not $ null ics
                                                                       }) f $ facilities ss),
                                    cec = transact {currentBlock = ix, nextBlock = ix + 1, ownership=""} :
-                                   it {currentBlock = nextBlock it, 
-                                       nextBlock = nextBlock it + 1, 
+                                   it { --currentBlock = nextBlock it, 
+                                        --nextBlock = nextBlock it + 1, 
                                        ownership = f} :
                                    cec ss
                        }
@@ -145,8 +145,8 @@ sReturn' ss (SBlock (Return f) ix) transact =
                                                                       }) f $ facilities ss),
                                    cec = transact {currentBlock = ix, nextBlock = ix + 1, ownership=""} :
                                    cec ss,
-                                   fec = addFE (fec ss) (t + dt, it{currentBlock = nextBlock it, 
-                                                                    nextBlock = nextBlock it + 1, 
+                                   fec = addFE (fec ss) (t + dt, it{ --currentBlock = nextBlock it, 
+                                                                     --nextBlock = nextBlock it + 1, 
                                                                     ownership = f})
                        }
          [] -> case dc sf of

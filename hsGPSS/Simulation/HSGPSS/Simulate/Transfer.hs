@@ -1,10 +1,11 @@
 module Simulation.HSGPSS.Simulate.Transfer where
 
-import Simulation.HSGPSS.Blocks hiding (blocks)
+import Simulation.HSGPSS.Blocks hiding (blocks, priority, storages)
 import Simulation.HSGPSS.SimulationState
 import Simulation.HSGPSS.Chains
 import Simulation.HSGPSS.Transaction
 import qualified Simulation.HSGPSS.Facility as F
+import qualified Simulation.HSGPSS.Storage as S
 import Simulation.HSGPSS.MyArray
 import Data.Array 
 import System.Random
@@ -19,8 +20,18 @@ isAvailable ss (Seize name) transact =
     case DM.lookup name $ facilities ss of
         Nothing -> True
         Just f -> F.isAvailable f
-isAvailable ss (PreemptIR name _ _ _) transact = undefined
-isAvailable ss (PreemptPR name _ _ _) transact = undefined
+isAvailable ss (PreemptIR name _ _ _) transact = 
+    case DM.lookup name $ facilities ss of
+        Nothing -> True
+        Just f -> not $ F.isInterrupted f
+isAvailable ss (PreemptPR name _ _ _) transact = 
+    case DM.lookup name $ facilities ss of
+        Nothing -> True
+        Just f -> F.ownerPriority f < (priority transact) 
+isAvailable ss (Enter name count) transact = 
+    case DM.lookup name $ storages ss of
+        Nothing -> False
+        Just s -> S.unused s >= count
 isAvailable _ _ _ = True 
 
 transfer :: SimulationState -> SBlock -> Transaction -> IO SimulationState

@@ -19,7 +19,7 @@ generateGeneral ss ix b t =
     if limit b > 0
     then let time = if currentTime ss == 0 then t + delay b else t
              transact = Transaction ix (ix+1) (B.priority b) Passive empty ""
-         in ss{fec = addFE (fec ss) (time + currentTime ss,transact), blocks = changeElem (blocks ss) ix (SBlock b ix)}
+         in ss{fec = addFE (fec ss) (time + currentTime ss,transact), blocks = changeElem (blocks ss) ix (SBlock b{limit = limit b - 1} ix)}
     else ss
 
 generate :: SimulationState -> SBlock -> IO SimulationState

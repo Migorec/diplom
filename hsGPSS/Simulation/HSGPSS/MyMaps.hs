@@ -5,6 +5,7 @@ module Simulation.HSGPSS.MyMaps where
 
 import Simulation.HSGPSS.Queue
 import Simulation.HSGPSS.Facility
+import Simulation.HSGPSS.Storage
 import qualified Data.IntMap as IM
 import qualified Data.Map as M
 
@@ -18,7 +19,11 @@ instance DefaultUpdateClass (M.Map String SFacility) SFacility String where
                                 Just v  -> M.adjust f key m
         where val = M.lookup key m
         
-        
+instance DefaultUpdateClass (M.Map String SStorage) SStorage String where
+    defaultUpdate f key m = case val of
+                                Nothing -> error "no default for Storage. Int shoulb be defined explicitly"
+                                Just v  -> M.adjust f key m
+        where val = M.lookup key m
 
 instance DefaultUpdateClass (M.Map String SQueue) SQueue String where
     defaultUpdate f key m = case val of

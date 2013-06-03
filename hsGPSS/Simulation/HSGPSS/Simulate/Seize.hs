@@ -28,7 +28,7 @@ release' ss (SBlock (Release f) ix) transact =
     case dc $ facilities ss ! f of
         [] -> ss{facilities = defaultUpdate (F.release (currentTime ss)) f $ facilities ss,
                  cec = transact{currentBlock = ix, nextBlock = ix + 1, ownership = ""} : cec ss}
-        t:ts -> ss{facilities = defaultUpdate (\f -> (F.capture (currentTime ss) (priority transact) $ F.release (currentTime ss) f){dc = ts}) f $ facilities ss,
+        t:ts -> ss{facilities = defaultUpdate (\f -> (F.capture (currentTime ss) (priority t) $ F.release (currentTime ss) f){dc = ts}) f $ facilities ss,
                    cec = transact{currentBlock = ix, nextBlock = ix + 1, ownership = ""} : t{nextBlock = nextBlock t + 1, currentBlock = nextBlock t, state = Active, ownership = f} : cec ss}
                       
 release :: SimulationState -> SBlock -> Transaction -> IO SimulationState

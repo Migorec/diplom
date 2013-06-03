@@ -18,16 +18,18 @@ import Simulation.HSGPSS.Simulate.Queue
 import Simulation.HSGPSS.Simulate.Transfer
 import Simulation.HSGPSS.Simulate.Seize
 import Simulation.HSGPSS.Simulate.Preempt
+import Simulation.HSGPSS.Simulate.Enter
+import Simulation.HSGPSS.SimulationResult
 import Debug.Trace
 
 
-simulate :: BlockStateMonad -> Int -> IO SimulationState
-simulate bs tt = firstGenerate (ssInit bs tt) >>= fecStep
+simulate :: BlockStateMonad -> Int -> IO SimulationResult
+simulate bs tt = firstGenerate (ssInit bs tt) >>= fecStep >>= \s -> return $ result s
 
 cecStep :: SimulationState -> IO SimulationState
 cecStep ss = 
     case cec ss of
-      [] -> {-trace (show ss ++ "\n\n") $ -}fecStep ss
+      [] -> {-trace (show ss ++ "\n\n") $-} fecStep ss
       t:ts -> {-trace (show ss ++ "\n\n") $ -}do ns <- moveTransaction t ss{cec = ts}
                                                  if toTerminate ns > 0
                                                   then cecStep ns
@@ -53,6 +55,9 @@ moveTransaction t ss' =
         Release _ -> release ss sblock t
         PreemptIR _ _ _ _ -> preempt ss sblock t
         PreemptPR _ _ _ _ -> preempt ss sblock t
+        Return _ -> sReturn ss sblock t
+        Enter _ _ -> enter ss sblock t
+        Leave _ _ -> leave ss sblock t 
         GenerateRangeNoLimit _ _ _ _ -> error "Transaction can't enter GENERATE block!"
         GenerateRangeGeneral _ _ _ _ _ -> error "Transaction can't enter GENERATE block!"
         GenerateFuncGeneral _ _ _ _ _ -> error "Transaction can't enter GENERATE block!"

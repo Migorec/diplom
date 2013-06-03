@@ -1,5 +1,7 @@
 module Simulation.HSGPSS.Storage where
 
+import Simulation.HSGPSS.Chains
+import Simulation.HSGPSS.Transaction
 
 data SStorage = SStorage { capacity :: Int,
                            unused :: Int,
@@ -7,16 +9,20 @@ data SStorage = SStorage { capacity :: Int,
                            useCount :: Int,
                            utilization :: Double,
                            maxInUse :: Int,
-                           lastMod :: Double
+                           lastMod :: Double,
+                           dc :: DC
                          } deriving (Eq, Show)
                          
                
 stInit :: Int -> SStorage
-stInit c = SStorage c c 0 0 0 0 0
+stInit c = SStorage c c 0 0 0 0 0 []
                          
 inUse :: SStorage -> Int
 inUse sst = capacity sst - unused sst
                            
+          
+queue :: Transaction -> SStorage -> SStorage
+queue t s = s{dc = addPC (dc s) t}
                            
 enter :: Int -> Double -> SStorage  -> SStorage
 enter dec t sst = 
