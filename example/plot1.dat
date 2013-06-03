@@ -1,0 +1,7 @@
+x; set terminal png size 600,500;
+ set output "test.png";
+ set grid;
+ set key outside top center;
+ set xlabel "Интпенсивность отказов процессоров";
+ set ylabel "Производительность системы";
+ plot "temp.txt" using 1:2 with lines ti "Аналитическая модель", "temp.txt" using 1:3 w l ti "Имитационная модель"; 
