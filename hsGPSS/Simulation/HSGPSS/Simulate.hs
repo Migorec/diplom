@@ -9,7 +9,6 @@ import Prelude hiding (foldl)
 import Simulation.HSGPSS.Blocks hiding (blocks)
 import Simulation.HSGPSS.Chains
 import Simulation.HSGPSS.Transaction
-import Simulation.HSGPSS.Facility hiding (release, queue)
 import Simulation.HSGPSS.Queue
 import Simulation.HSGPSS.SimulationState
 import Simulation.HSGPSS.Simulate.Generate

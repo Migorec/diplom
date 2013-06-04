@@ -1,0 +1,34 @@
+name:                hsGPSS
+version:             0.1.0.0
+author:              Minix
+maintainer:          migorec@gmail.com
+build-type:          Simple
+cabal-version:       >=1.8
+
+-- Описание библиотеки
+library
+  -- Модули экспортируемые библиотекой
+  exposed-modules: Simulation.HSGPSS
+                   Simulation.HSGPSS.Prelude
+                   Simulation.HSGPSS.Random.Functions
+  
+  -- Модули включаемые в библиотеку, но не экспортируемые
+  other-modules: Simulation.HSGPSS.Blocks,
+                 Simulation.HSGPSS.Blocks.Generate,
+                 . . .
+                 Simulation.HSGPSS.Random
+             
+  -- Пакеты от которых зависит библиотека
+  build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, containers ==0.5.*, random ==1.0.*
+  
+-- Исполняемая программа с тестами
+executable tests
+    -- Головной модуль
+    main-is: Simulation/HSGPSS/Tests/Main.hs
+    -- Прочие модули
+    other-modules: Simulation.HSGPSS.Tests.Blocks.Generate,
+                   . . .
+                   Simulation.HSGPSS.Tests.Chains
+    -- Зависимости
+    build-depends:       base >=4.5 && <5, array ==0.4.*, mtl ==2.1.*, HUnit ==1.2.*,  containers ==0.5.*, random ==1.0.*, statistics ==0.10.*, vector ==0.10.*
+
