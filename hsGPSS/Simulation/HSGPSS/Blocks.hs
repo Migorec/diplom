@@ -50,6 +50,8 @@ data Block = AdvanceRange         { mean :: Double,
             |AdvanceFunc          { mean :: Double,
                                     func :: Double -> Double
                                   }
+            |AdvanceParam         { p    :: Int
+                                  }
             |GenerateRangeGeneral { mean :: Double,
                                     halfRange :: Double,
                                     delay :: Double,

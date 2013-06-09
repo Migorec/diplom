@@ -14,6 +14,7 @@ ODT=odt
 DIA=graphics/dia
 DOT=graphics/dot
 SVG=graphics/svg
+GPDF=graphics/pdf
 TEX=tex
 DEPS=.deps
 SRC=src
@@ -58,6 +59,10 @@ $(INC)/odt/%.pdf: $(ODT)/%.odt
 $(INC)/dia/%.eps: $(DIA)/%.dia
 	mkdir -p $(INC)/dia
 	dia -e $(@:%.pdf=%.eps) -t eps $<
+
+$(INC)/pdf/%.pdf: $(GPDF)/%.pdf 
+	mkdir -p $(INC)/pdf
+	cp $< $@
 
 # .dot -> .eps (via dot2tex)
 $(INC)/dot/%.eps: $(DOT)/%.dot

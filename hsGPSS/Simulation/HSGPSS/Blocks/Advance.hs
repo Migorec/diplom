@@ -4,6 +4,8 @@ module Simulation.HSGPSS.Blocks.Advance where
 
 import Simulation.HSGPSS.Blocks
 
+data Pr = Pr Double deriving (Eq,Show)
+
 class AdvanceClass a where
     advance :: a -> BlockStateMonad
     
@@ -15,3 +17,6 @@ instance AdvanceClass (Double, Double) where
     
 instance AdvanceClass (Double, Double -> Double) where
     advance (m, f) = addBlock $ AdvanceFunc m f
+    
+instance AdvanceClass Pr where
+    advance (Pr p) = addBlock $ AdvanceParam (round p)

@@ -20,3 +20,5 @@ advance ss (SBlock (AdvanceRange m h) ix) transact =
 advance ss (SBlock (AdvanceFunc m f) ix) transact = 
     do rTime <- randomMFTime m f
        return $ advance' ss ix transact rTime
+advance ss (SBlock (AdvanceParam p) ix) transact =
+       return $ advance' ss ix transact (params transact ! p)

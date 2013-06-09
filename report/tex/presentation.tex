@@ -64,16 +64,13 @@
 
 % Команды section и subsection начинают новый слайд.
 
-\section{Цель работы}
-
+\section{Цель и задачи работы}
+\small
 \emph{Целью работы} является создание системы имитационного
-моделирования, основанной на принципах и синтаксисе GPSS, однако позволяющей разрабатывать модели как часть более крупной программы.
+моделирования, основанной на принципах и синтаксисе GPSS, позволяющей разрабатывать модели как часть более крупной программы на языке Haskell.
 
-
-\section{Решаемые задачи}
-
+\subsubsection{Решаемые задачи}
 \begin{enumerate}
-\item Изучить принципы функционирования и синтаксис описания моделей в GPSS.
 \item Разработать синтаксис описания моделей схожий с синтаксисом
 GPSS, но согласующийся с синтаксисом Haskell.
 \item Выбрать подмножество блоков GPSS, которые следует реализовать
@@ -82,7 +79,7 @@ GPSS, но согласующийся с синтаксисом Haskell.
 \item Провести тестирование разработанного программного обеспечения.
 \end{enumerate}
 
-
+\normalsize
 %\section{Объекты GPSS}
 %\begin{enumerate}
 %\item Транзакты.
@@ -176,5 +173,72 @@ model =
 \end{verbatim}
 
 \end{minipage}
-\end{document}
 
+
+\section{Состояние системы в процессе моделирования}
+
+\includegraphics[width=\textwidth]{inc/dia/umlSim}
+
+
+\section{Алгоритм имитационного моделирования}
+%\begin{figure}
+\centering
+\includegraphics[height=0.75\textheight]{inc/dia/simFlowchartPres}
+%\end{figure}
+
+\section{Алгоритм продвижения транзактов}
+\begin{minipage}[m]{.49\textwidth}
+\includegraphics[width=\textwidth]{inc/dia/enterFlowchart}
+\end{minipage}
+\begin{minipage}[m]{.49\textwidth}
+\includegraphics[width=\textwidth]{inc/dia/leaveFlowchart}
+\end{minipage}
+
+
+\section{Структура библиотеки}
+\includegraphics[height=0.75\textheight]{inc/dia/libStructHuge}
+
+
+\section{Алгоритм аналитического решения}
+\vfill
+\includegraphics[width=\textwidth]{inc/dia/idefAnalit}
+\vfill
+
+\section{Структура демонстрационной программы}
+\includegraphics[height=0.75\textheight]{inc/dia/demoStruct}
+
+%\section{Сравнение аналитической и имитационной модели}
+
+
+%\includegraphics[height=0.75\textheight]{inc/pdf/plot1}
+
+%\section{Сравнение аналитической и имитационной модели}
+%\includegraphics[height=0.75\textheight]{inc/pdf/plot2}
+
+\section{Сравнение аналитической и имитационной модели}
+\includegraphics[height=0.75\textheight]{inc/pdf/plot3}
+
+\section{Сравнение аналитической и имитационной модели}
+\includegraphics[height=0.75\textheight]{inc/pdf/plot4}
+
+%\section{Сравнение аналитической и имитационной модели}
+%\includegraphics[height=0.75\textheight]{inc/pdf/plot5}
+
+
+\section{Выводы}
+
+\small
+
+\begin{itemize}
+
+\item В ходе работы была разработана и реализована бибилиотека имитационного моделирования, позволяющая описывать и исследовать заданный класс систем массового обслуживания.
+
+\item Построены аналитическая и имитационная модель тестовой системы.
+
+\item Реализована демонстрационная программа, показывающая возможности разработанной библиотеки.
+
+\item Проведен ряд опытов, подтверждающих корректность разработанных алгоритмов и их реализации.
+
+\end{itemize}
+\normalsize
+\end{document}

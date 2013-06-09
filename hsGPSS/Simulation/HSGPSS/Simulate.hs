@@ -28,8 +28,8 @@ simulate bs tt = firstGenerate (ssInit bs tt) >>= fecStep >>= \s -> return $ res
 cecStep :: SimulationState -> IO SimulationState
 cecStep ss = 
     case cec ss of
-      [] -> {-trace (show ss ++ "\n\n") $-} fecStep ss
-      t:ts -> {-trace (show ss ++ "\n\n") $ -}do ns <- moveTransaction t ss{cec = ts}
+      [] -> {-trace (show ss ++ "\n\n") $ -}fecStep ss
+      t:ts -> {-trace (show ss ++ "\n\n") $-} do ns <- moveTransaction t ss{cec = ts}
                                                  if toTerminate ns > 0
                                                   then cecStep ns
                                                   else return ns
@@ -42,6 +42,7 @@ moveTransaction t ss' =
     case block sblock of
         AdvanceRange _ _ -> advance ss sblock t
         AdvanceFunc _ _ -> advance ss sblock t
+        AdvanceParam _ -> advance ss sblock t
         Queue _ _ -> queue ss sblock t
         Depart _ _ -> depart ss sblock t
         Terminate dec -> return $ ss {toTerminate = toTerminate ss - dec}

@@ -1,6 +1,5 @@
 ;Доступное число ремонтных бригад
 REPAIRERS STORAGE 5
-
 ;Общее время моделирования
 GENERATE ,,,1
 ADVANCE 1000
@@ -9,7 +8,7 @@ TERMINATE 1
 ;Основная часть модели 
 GENERATE ,,,10
 
-;фаза обдумывания
+;Фаза обдумывания
 LUSER ADVANCE 4,1
       TRANSFER ALL,LCPU1,LCPUN,4
 
@@ -17,25 +16,20 @@ LUSER ADVANCE 4,1
 LCPU1 SEIZE CPU1
       ADVANCE 2,1
       RELEASE CPU1
-      TRANSFER ,LPHASE2
-      
+      TRANSFER ,LPHASE2 
 ...
-
 LCPUN SEIZE CPUN
       ADVANCE 2,1
       RELEASE CPUN
       TRANSFER ,LPHASE2
 
 LPHASE2 TRANSFER ALL,LCHAN1,LCHANM,4
-
 ;Вторая фаза обработки
 LCHAN1 SEIZE CHAN1
        ADVANCE 2,1
        RELEASE CHAN1
        TRANSFER ,LUSER
-      
 ...
-
 LCHANM SEIZE CHANM
       ADVANCE 2,1
       RELEASE CHANM
@@ -50,9 +44,7 @@ CPUBROKE1 ADVANCE 20,4
           LEAVE REPAIRERS
           RETURN CPU1
           TRANSFER ,CPUBROKE1
-
 ...
-
           GENERATE ,,,1,10
 CPUBROKEN ADVANCE 20,4
           PREEMPT CPUN
@@ -70,9 +62,7 @@ CPUBROKEN ADVANCE 20,4
            LEAVE REPAIRERS
            RETURN СHAN1
            TRANSFER ,СHANBROKE1
-
 ...
-
            GENERATE ,,,1,10
 СHANBROKEN ADVANCE 20,4
            PREEMPT СHANM
