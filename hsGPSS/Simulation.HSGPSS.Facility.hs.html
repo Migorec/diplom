@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>module Simulation.HSGPSS.Facility where
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>import Simulation.HSGPSS.Chains
+<span class="lineno">    4 </span>import Simulation.HSGPSS.Transaction
+<span class="lineno">    5 </span>
+<span class="lineno">    6 </span>data SFacility = SFacility { <span class="nottickedoff"><span class="decl"><span class="nottickedoff">isAvailable</span></span></span> :: Bool,
+<span class="lineno">    7 </span>                             <span class="nottickedoff"><span class="decl"><span class="nottickedoff">isInterrupted</span></span></span> :: Bool,
+<span class="lineno">    8 </span>                             <span class="istickedoff"><span class="decl"><span class="istickedoff">captureCount</span></span></span> :: Int,
+<span class="lineno">    9 </span>                             <span class="istickedoff"><span class="decl"><span class="istickedoff">captureTime</span></span></span> :: Double, --суммарно время, в течении которого устройство было занято
+<span class="lineno">   10 </span>                             <span class="istickedoff"><span class="decl"><span class="istickedoff">lastCaptureTime</span></span></span> :: Double, -- момент времени, когда устройство стало занято в последний раз
+<span class="lineno">   11 </span>                             <span class="nottickedoff"><span class="decl"><span class="nottickedoff">utilization</span></span></span> :: Double,
+<span class="lineno">   12 </span>                             <span class="nottickedoff"><span class="decl"><span class="nottickedoff">ownerPriority</span></span></span> :: Int,
+<span class="lineno">   13 </span>                             <span class="istickedoff"><span class="decl"><span class="istickedoff">dc</span></span></span> :: DC, --delay chain
+<span class="lineno">   14 </span>                             <span class="istickedoff"><span class="decl"><span class="istickedoff">pc</span></span></span> :: DC, --pending chain (попытались вытеснить, но не смогли)
+<span class="lineno">   15 </span>                             <span class="istickedoff"><span class="decl"><span class="istickedoff">ic</span></span></span> :: IC --interrupt chains
+<span class="lineno">   16 </span>                           } deriving (<span class="decl"><span class="istickedoff"><span class="decl"><span class="nottickedoff">Eq</span></span></span></span>, <span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff">Show</span></span></span></span>)
+<span class="lineno">   17 </span>                           
+<span class="lineno">   18 </span>initFacility :: SFacility
+<span class="lineno">   19 </span><span class="decl"><span class="istickedoff">initFacility = SFacility True False 0 0 0 0 0 [] [] []</span></span>
+<span class="lineno">   20 </span>
+<span class="lineno">   21 </span>queue :: Transaction -&gt; SFacility -&gt; SFacility
+<span class="lineno">   22 </span><span class="decl"><span class="istickedoff">queue t sf = sf{dc = addPC (dc sf) t}</span></span>
+<span class="lineno">   23 </span>
+<span class="lineno">   24 </span>sInterrupt :: (Maybe Double, Transaction) -&gt; SFacility -&gt; SFacility
+<span class="lineno">   25 </span><span class="decl"><span class="istickedoff">sInterrupt r sf = sf{ic = addIC (ic sf) r}</span></span>
+<span class="lineno">   26 </span>
+<span class="lineno">   27 </span>setInterrupt :: SFacility -&gt; SFacility
+<span class="lineno">   28 </span><span class="decl"><span class="istickedoff">setInterrupt sf = sf{isInterrupted = True}</span></span>
+<span class="lineno">   29 </span>
+<span class="lineno">   30 </span>unsetInterrupt :: SFacility -&gt; SFacility
+<span class="lineno">   31 </span><span class="decl"><span class="istickedoff">unsetInterrupt sf = sf{isInterrupted = False}</span></span>
+<span class="lineno">   32 </span>
+<span class="lineno">   33 </span>
+<span class="lineno">   34 </span>pend :: Transaction -&gt; SFacility -&gt; SFacility
+<span class="lineno">   35 </span><span class="decl"><span class="istickedoff">pend t sf = sf{pc = addPC (pc sf) t}</span></span>
+<span class="lineno">   36 </span>
+<span class="lineno">   37 </span>capture :: Double -&gt; Int -&gt; SFacility -&gt; SFacility
+<span class="lineno">   38 </span><span class="decl"><span class="istickedoff">capture t p sf = sf {isAvailable = False, </span>
+<span class="lineno">   39 </span><span class="spaces">                     </span><span class="istickedoff">captureCount = 1 + captureCount sf, </span>
+<span class="lineno">   40 </span><span class="spaces">                     </span><span class="istickedoff">lastCaptureTime = t,</span>
+<span class="lineno">   41 </span><span class="spaces">                     </span><span class="istickedoff">utilization = captureTime sf / t,</span>
+<span class="lineno">   42 </span><span class="spaces">                     </span><span class="istickedoff">ownerPriority = p</span>
+<span class="lineno">   43 </span><span class="spaces">                    </span><span class="istickedoff">}</span></span>
+<span class="lineno">   44 </span>
+<span class="lineno">   45 </span>
+<span class="lineno">   46 </span>release :: Double -&gt; SFacility -&gt; SFacility
+<span class="lineno">   47 </span><span class="decl"><span class="istickedoff">release t sf = let newCaptureTime = captureTime sf + t - lastCaptureTime sf</span>
+<span class="lineno">   48 </span><span class="spaces">               </span><span class="istickedoff">in sf {isAvailable = True, </span>
+<span class="lineno">   49 </span><span class="spaces">                      </span><span class="istickedoff">captureTime = newCaptureTime, </span>
+<span class="lineno">   50 </span><span class="spaces">                      </span><span class="istickedoff">utilization = newCaptureTime / t,</span>
+<span class="lineno">   51 </span><span class="spaces">                      </span><span class="istickedoff">ownerPriority = 0</span>
+<span class="lineno">   52 </span><span class="spaces">                     </span><span class="istickedoff">}</span></span>
+<span class="lineno">   53 </span>
+
+</pre>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>module Simulation.HSGPSS.Simulate.Queue where
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>import Simulation.HSGPSS.Blocks hiding (blocks)
+<span class="lineno">    4 </span>import Simulation.HSGPSS.SimulationState
+<span class="lineno">    5 </span>import Simulation.HSGPSS.Chains
+<span class="lineno">    6 </span>import Simulation.HSGPSS.Transaction
+<span class="lineno">    7 </span>import Simulation.HSGPSS.MyArray
+<span class="lineno">    8 </span>import Simulation.HSGPSS.MyMaps
+<span class="lineno">    9 </span>import Simulation.HSGPSS.Queue
+<span class="lineno">   10 </span>import Data.IntMap
+<span class="lineno">   11 </span>import System.Random
+<span class="lineno">   12 </span>
+<span class="lineno">   13 </span>queue' :: SimulationState -&gt; SBlock -&gt; Transaction -&gt; SimulationState
+<span class="lineno">   14 </span><span class="decl"><span class="istickedoff">queue' ss (SBlock (Queue name inc) ix) transact = ss{queues = defaultUpdate (modify (currentTime ss) inc) name $ queues ss, cec = transact{currentBlock = ix, nextBlock = ix + 1} : cec ss}</span></span>
+<span class="lineno">   15 </span>
+<span class="lineno">   16 </span>queue :: SimulationState -&gt; SBlock -&gt; Transaction -&gt; IO SimulationState
+<span class="lineno">   17 </span><span class="decl"><span class="nottickedoff">queue ss sb transact = return $ queue' ss sb transact</span></span>
+<span class="lineno">   18 </span>
+<span class="lineno">   19 </span>depart' :: SimulationState -&gt; SBlock -&gt; Transaction -&gt; SimulationState
+<span class="lineno">   20 </span><span class="decl"><span class="istickedoff">depart' ss (SBlock (Depart name dec) ix) transact = ss{queues = defaultUpdate (modify (currentTime ss) (-dec)) name $ queues ss, cec = transact{currentBlock = ix, nextBlock = ix + 1} : cec ss}</span></span>
+<span class="lineno">   21 </span>
+<span class="lineno">   22 </span>depart :: SimulationState -&gt; SBlock -&gt; Transaction -&gt; IO SimulationState
+<span class="lineno">   23 </span><span class="decl"><span class="nottickedoff">depart ss sb transact = return $ depart' ss sb transact</span></span>
+
+</pre>
+</body>
+</html>

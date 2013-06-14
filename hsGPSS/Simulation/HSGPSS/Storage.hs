@@ -46,7 +46,6 @@ leave inc t sst =
     then error "overfull storage!"
     else let dt = t - lastMod sst
              unused' = unused sst + inc
-             inUse' = capacity sst - unused'
              avgInUse' = (avgInUse sst * lastMod sst + (fromIntegral $ inUse sst) * dt) / t
          in sst{unused = unused',
                 avgInUse = avgInUse',

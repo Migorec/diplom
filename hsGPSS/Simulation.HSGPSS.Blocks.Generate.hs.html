@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>{-# LANGUAGE FlexibleInstances #-}
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>module Simulation.HSGPSS.Blocks.Generate where
+<span class="lineno">    4 </span>
+<span class="lineno">    5 </span>import Simulation.HSGPSS.Blocks
+<span class="lineno">    6 </span>
+<span class="lineno">    7 </span>class GenerateClass a where
+<span class="lineno">    8 </span>    generate :: a -&gt; BlockStateMonad
+<span class="lineno">    9 </span>
+<span class="lineno">   10 </span>instance GenerateClass Double where
+<span class="lineno">   11 </span>    <span class="decl"><span class="istickedoff">generate m = addBlock $ GenerateRangeNoLimit m 0 0 0</span></span>
+<span class="lineno">   12 </span>
+<span class="lineno">   13 </span>instance GenerateClass (Double, Double) where
+<span class="lineno">   14 </span>    <span class="decl"><span class="istickedoff">generate (m, r) = addBlock $ GenerateRangeNoLimit m r 0 0</span></span>
+<span class="lineno">   15 </span>        
+<span class="lineno">   16 </span>instance GenerateClass (Double, Double, Double) where
+<span class="lineno">   17 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d) = addBlock $ GenerateRangeNoLimit m r d 0</span></span>
+<span class="lineno">   18 </span>
+<span class="lineno">   19 </span>instance GenerateClass (Double, Double, Double, (), Double) where
+<span class="lineno">   20 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, (), p) = addBlock $ GenerateRangeNoLimit m r d (round p)</span></span>
+<span class="lineno">   21 </span>
+<span class="lineno">   22 </span>instance GenerateClass (Double, Double, Double, (), Int) where
+<span class="lineno">   23 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, (), p) = addBlock $ GenerateRangeNoLimit m r d p</span></span>
+<span class="lineno">   24 </span>
+<span class="lineno">   25 </span>instance GenerateClass (Double, Double, Double, Double) where
+<span class="lineno">   26 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, l) = addBlock $ GenerateRangeGeneral m r d (round l) 0</span></span>
+<span class="lineno">   27 </span>
+<span class="lineno">   28 </span>instance GenerateClass (Double, Double, Double, Int) where
+<span class="lineno">   29 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, l) = addBlock $ GenerateRangeGeneral m r d l 0</span></span>
+<span class="lineno">   30 </span>
+<span class="lineno">   31 </span>instance GenerateClass (Double, Double, Double, Double, Double) where
+<span class="lineno">   32 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, l, p) = addBlock $ GenerateRangeGeneral m r d (round l) (round p)</span></span>
+<span class="lineno">   33 </span>    
+<span class="lineno">   34 </span>instance GenerateClass (Double, Double, Double, Int, Double) where
+<span class="lineno">   35 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, l, p) = addBlock $ GenerateRangeGeneral m r d l (round p)</span></span>
+<span class="lineno">   36 </span>    
+<span class="lineno">   37 </span>instance GenerateClass (Double, Double, Double, Double, Int) where
+<span class="lineno">   38 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, l, p) = addBlock $ GenerateRangeGeneral m r d (round l) p</span></span>
+<span class="lineno">   39 </span>    
+<span class="lineno">   40 </span>instance GenerateClass (Double, Double, Double, Int, Int) where
+<span class="lineno">   41 </span>    <span class="decl"><span class="istickedoff">generate (m, r, d, l, p) = addBlock $ GenerateRangeGeneral m r d l p</span></span>
+<span class="lineno">   42 </span>
+<span class="lineno">   43 </span>
+<span class="lineno">   44 </span>instance GenerateClass (Double, (Double -&gt; Double)) where
+<span class="lineno">   45 </span>    <span class="decl"><span class="nottickedoff">generate (m, f) = addBlock $ GenerateFuncNoLimit m f 0 0</span></span>
+<span class="lineno">   46 </span>        
+<span class="lineno">   47 </span>instance GenerateClass (Double, (Double -&gt; Double), Double) where
+<span class="lineno">   48 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d) = addBlock $ GenerateFuncNoLimit m f d 0</span></span>
+<span class="lineno">   49 </span>
+<span class="lineno">   50 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, (), Double) where
+<span class="lineno">   51 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, (), p) = addBlock $ GenerateFuncNoLimit m f d (round p)</span></span>
+<span class="lineno">   52 </span>
+<span class="lineno">   53 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, (), Int) where
+<span class="lineno">   54 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, (), p) = addBlock $ GenerateFuncNoLimit m f d p</span></span>
+<span class="lineno">   55 </span>
+<span class="lineno">   56 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, Double) where
+<span class="lineno">   57 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, l) = addBlock $ GenerateFuncGeneral m f d (round l) 0</span></span>
+<span class="lineno">   58 </span>
+<span class="lineno">   59 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, Int) where
+<span class="lineno">   60 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, l) = addBlock $ GenerateFuncGeneral m f d l 0</span></span>
+<span class="lineno">   61 </span>
+<span class="lineno">   62 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, Double, Double) where
+<span class="lineno">   63 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, l, p) = addBlock $ GenerateFuncGeneral m f d (round l) (round p)</span></span>
+<span class="lineno">   64 </span>    
+<span class="lineno">   65 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, Int, Double) where
+<span class="lineno">   66 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, l, p) = addBlock $ GenerateFuncGeneral m f d l (round p)</span></span>
+<span class="lineno">   67 </span>    
+<span class="lineno">   68 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, Double, Int) where
+<span class="lineno">   69 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, l, p) = addBlock $ GenerateFuncGeneral m f d (round l) p</span></span>
+<span class="lineno">   70 </span>    
+<span class="lineno">   71 </span>instance GenerateClass (Double, (Double -&gt; Double), Double, Int, Int) where
+<span class="lineno">   72 </span>    <span class="decl"><span class="nottickedoff">generate (m, f, d, l, p) = addBlock $ GenerateFuncGeneral m f d l p</span></span>
+
+</pre>
+</body>
+</html>

@@ -22,6 +22,7 @@ model = do generate (5,2)
 
 sModel :: BlockStateMonad
 sModel = do storage ("SName",2)
+            storage ("ASName",5)
             generate (5,2)
             enter "SName"
             leave "SName"
@@ -34,7 +35,7 @@ ssInitTest = TestCase (assertEqual "for (ssInit model 10),"
                            )
                            
 ssInitWithStorTest = TestCase (assertEqual "for (ssInit sModel 10)," 
-                                   (SimulationState [] [] (listArray (round 0,round 3) [SBlock (GenerateRangeNoLimit 5 2 0 (round 0)) $ round 0, SBlock (Enter "SName" $ round 1) $ round 1, SBlock (Leave "SName" $ round 1) $ round 2, SBlock (Terminate (round 1)) $ round 3]) empty empty (singleton "SName" (stInit $ round 2)) (round 10) 0 ) 
+                                   (SimulationState [] [] (listArray (round 0,round 3) [SBlock (GenerateRangeNoLimit 5 2 0 (round 0)) $ round 0, SBlock (Enter "SName" $ round 1) $ round 1, SBlock (Leave "SName" $ round 1) $ round 2, SBlock (Terminate (round 1)) $ round 3]) empty empty (fromList [("SName", (stInit $ round 2)),("ASName",(stInit $ round 5))]) (round 10) 0 ) 
                                    (ssInit sModel $ round 10)
                            )
 

@@ -17,7 +17,13 @@ twoArgTest = TestCase (assertEqual "for (runState (advance 1 2) initState),"
                                    (round(0), BlockState [AdvanceRange 1 2] (round 1) []) 
                                    (runState (advance (1,2)) initState )
                       )
+
+prTest = TestCase (assertEqual "for (runState (advance (Pr 1)) initState )," 
+                                   (round(0), BlockState [AdvanceParam (round 1)] (round 1) []) 
+                                   (runState (advance (Pr 1)) initState )
+                      )
                       
 advanceTests = TestList [ TestLabel "oneArgTest" oneArgTest,
-                          TestLabel "twoArgTest" twoArgTest
+                          TestLabel "twoArgTest" twoArgTest,
+                          TestLabel "prTest" prTest
                         ]

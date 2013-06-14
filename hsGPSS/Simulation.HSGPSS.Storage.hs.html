@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>module Simulation.HSGPSS.Storage where
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>import Simulation.HSGPSS.Chains
+<span class="lineno">    4 </span>import Simulation.HSGPSS.Transaction
+<span class="lineno">    5 </span>
+<span class="lineno">    6 </span>data SStorage = SStorage { <span class="istickedoff"><span class="decl"><span class="istickedoff">capacity</span></span></span> :: Int,
+<span class="lineno">    7 </span>                           <span class="istickedoff"><span class="decl"><span class="istickedoff">unused</span></span></span> :: Int,
+<span class="lineno">    8 </span>                           <span class="istickedoff"><span class="decl"><span class="istickedoff">avgInUse</span></span></span> :: Double,
+<span class="lineno">    9 </span>                           <span class="istickedoff"><span class="decl"><span class="istickedoff">useCount</span></span></span> :: Int,
+<span class="lineno">   10 </span>                           <span class="nottickedoff"><span class="decl"><span class="nottickedoff">utilization</span></span></span> :: Double,
+<span class="lineno">   11 </span>                           <span class="istickedoff"><span class="decl"><span class="istickedoff">maxInUse</span></span></span> :: Int,
+<span class="lineno">   12 </span>                           <span class="istickedoff"><span class="decl"><span class="istickedoff">lastMod</span></span></span> :: Double,
+<span class="lineno">   13 </span>                           <span class="nottickedoff"><span class="decl"><span class="nottickedoff">dc</span></span></span> :: DC
+<span class="lineno">   14 </span>                         } deriving (<span class="decl"><span class="istickedoff"><span class="decl"><span class="nottickedoff">Eq</span></span></span></span>, <span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff">Show</span></span></span></span>)
+<span class="lineno">   15 </span>                         
+<span class="lineno">   16 </span>               
+<span class="lineno">   17 </span>stInit :: Int -&gt; SStorage
+<span class="lineno">   18 </span><span class="decl"><span class="istickedoff">stInit c = SStorage c c 0 0 0 0 0 []</span></span>
+<span class="lineno">   19 </span>                         
+<span class="lineno">   20 </span>inUse :: SStorage -&gt; Int
+<span class="lineno">   21 </span><span class="decl"><span class="istickedoff">inUse sst = capacity sst - unused sst</span></span>
+<span class="lineno">   22 </span>                           
+<span class="lineno">   23 </span>          
+<span class="lineno">   24 </span>queue :: Transaction -&gt; SStorage -&gt; SStorage
+<span class="lineno">   25 </span><span class="decl"><span class="nottickedoff">queue t s = s{dc = addPC (dc s) t}</span></span>
+<span class="lineno">   26 </span>                           
+<span class="lineno">   27 </span>enter :: Int -&gt; Double -&gt; SStorage  -&gt; SStorage
+<span class="lineno">   28 </span><span class="decl"><span class="istickedoff">enter dec t sst = </span>
+<span class="lineno">   29 </span><span class="spaces">    </span><span class="istickedoff">if (unused sst &lt; dec)</span>
+<span class="lineno">   30 </span><span class="spaces">    </span><span class="istickedoff">then error &quot;not enough units in storage!&quot;</span>
+<span class="lineno">   31 </span><span class="spaces">    </span><span class="istickedoff">else let dt = t - lastMod sst</span>
+<span class="lineno">   32 </span><span class="spaces">             </span><span class="istickedoff">unused' = unused sst - dec</span>
+<span class="lineno">   33 </span><span class="spaces">             </span><span class="istickedoff">inUse' = capacity sst - unused'</span>
+<span class="lineno">   34 </span><span class="spaces">             </span><span class="istickedoff">avgInUse' = (avgInUse sst * lastMod sst + (fromIntegral $ inUse sst) * dt) / t</span>
+<span class="lineno">   35 </span><span class="spaces">         </span><span class="istickedoff">in sst{unused = unused',</span>
+<span class="lineno">   36 </span><span class="spaces">                </span><span class="istickedoff">useCount = useCount sst + dec,</span>
+<span class="lineno">   37 </span><span class="spaces">                </span><span class="istickedoff">avgInUse = avgInUse',</span>
+<span class="lineno">   38 </span><span class="spaces">                </span><span class="istickedoff">maxInUse = max (maxInUse sst) inUse',</span>
+<span class="lineno">   39 </span><span class="spaces">                </span><span class="istickedoff">utilization = avgInUse' / (fromIntegral $ capacity sst),</span>
+<span class="lineno">   40 </span><span class="spaces">                </span><span class="istickedoff">lastMod = t</span>
+<span class="lineno">   41 </span><span class="spaces">               </span><span class="istickedoff">}</span></span> 
+<span class="lineno">   42 </span>               
+<span class="lineno">   43 </span>leave :: Int -&gt; Double -&gt; SStorage  -&gt; SStorage
+<span class="lineno">   44 </span><span class="decl"><span class="istickedoff">leave inc t sst = </span>
+<span class="lineno">   45 </span><span class="spaces">    </span><span class="istickedoff">if (capacity sst &lt; unused sst + inc)</span>
+<span class="lineno">   46 </span><span class="spaces">    </span><span class="istickedoff">then error &quot;overfull storage!&quot;</span>
+<span class="lineno">   47 </span><span class="spaces">    </span><span class="istickedoff">else let dt = t - lastMod sst</span>
+<span class="lineno">   48 </span><span class="spaces">             </span><span class="istickedoff">unused' = unused sst + inc</span>
+<span class="lineno">   49 </span><span class="spaces">             </span><span class="istickedoff">avgInUse' = (avgInUse sst * lastMod sst + (fromIntegral $ inUse sst) * dt) / t</span>
+<span class="lineno">   50 </span><span class="spaces">         </span><span class="istickedoff">in sst{unused = unused',</span>
+<span class="lineno">   51 </span><span class="spaces">                </span><span class="istickedoff">avgInUse = avgInUse',</span>
+<span class="lineno">   52 </span><span class="spaces">                </span><span class="istickedoff">utilization = avgInUse' / (fromIntegral $ capacity sst),</span>
+<span class="lineno">   53 </span><span class="spaces">                </span><span class="istickedoff">lastMod = t</span>
+<span class="lineno">   54 </span><span class="spaces">               </span><span class="istickedoff">}</span></span>
+<span class="lineno">   55 </span>
+
+</pre>
+</body>
+</html>

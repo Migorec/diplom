@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>{-# LANGUAGE FlexibleInstances #-}
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>module Simulation.HSGPSS.Blocks.Storage where
+<span class="lineno">    4 </span>
+<span class="lineno">    5 </span>import Simulation.HSGPSS.Blocks
+<span class="lineno">    6 </span>import Control.Monad.State
+<span class="lineno">    7 </span>
+<span class="lineno">    8 </span>class StorageClass a where
+<span class="lineno">    9 </span>    storage :: a -&gt; State BlockState ()
+<span class="lineno">   10 </span>    
+<span class="lineno">   11 </span>instance StorageClass (String, Int) where
+<span class="lineno">   12 </span>    <span class="decl"><span class="istickedoff">storage (name, capacity) = addStorage $ Storage name capacity</span></span>
+<span class="lineno">   13 </span>    
+<span class="lineno">   14 </span>instance StorageClass (String, Double) where
+<span class="lineno">   15 </span>    <span class="decl"><span class="istickedoff">storage (name, capacity) = addStorage $ Storage name (round capacity)</span></span>
+<span class="lineno">   16 </span>    
+<span class="lineno">   17 </span>    
+<span class="lineno">   18 </span>class EnterLeaveClass a where
+<span class="lineno">   19 </span>    enter :: a -&gt; BlockStateMonad
+<span class="lineno">   20 </span>    leave :: a -&gt; BlockStateMonad
+<span class="lineno">   21 </span>    
+<span class="lineno">   22 </span>instance EnterLeaveClass String where
+<span class="lineno">   23 </span>    <span class="decl"><span class="istickedoff">enter name = addBlock $ Enter name 1</span></span>
+<span class="lineno">   24 </span>    <span class="decl"><span class="istickedoff">leave name = addBlock $ Leave name 1</span></span>
+<span class="lineno">   25 </span>    
+<span class="lineno">   26 </span>instance EnterLeaveClass (String, Int) where
+<span class="lineno">   27 </span>    <span class="decl"><span class="istickedoff">enter (name, dec) = addBlock $ Enter name dec</span></span>
+<span class="lineno">   28 </span>    <span class="decl"><span class="istickedoff">leave (name, inc) = addBlock $ Leave name inc</span></span>
+<span class="lineno">   29 </span>    
+<span class="lineno">   30 </span>instance EnterLeaveClass (String, Double) where
+<span class="lineno">   31 </span>    <span class="decl"><span class="istickedoff">enter (name, dec) = addBlock $ Enter name (round dec)</span></span>
+<span class="lineno">   32 </span>    <span class="decl"><span class="istickedoff">leave (name, inc) = addBlock $ Leave name (round inc)</span></span>
+
+</pre>
+</body>
+</html>

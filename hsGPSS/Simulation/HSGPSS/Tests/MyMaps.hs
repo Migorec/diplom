@@ -4,7 +4,11 @@ import Test.HUnit
 import Simulation.HSGPSS.MyMaps
 import Simulation.HSGPSS.Facility
 import Simulation.HSGPSS.Queue
+import Simulation.HSGPSS.Storage
 import Data.Map
+import Data.IntMap hiding (fromList,empty)
+import qualified Data.IntMap as IM (fromList)
+import qualified Control.Exception as E
 
 
 emptyFacilityMap = TestCase (assertEqual "for (defaultUpdate id \"key\" empty)," 
@@ -24,6 +28,21 @@ notExistFacilityMap = TestCase (assertEqual "for (defaultUpdate (\\f -> f{isAvai
                                    (fromList [("key", initFacility),("key1", initFacility{isAvailable = True})]) 
                                    (defaultUpdate (\f -> f{isAvailable = True}) "key1" initFacilityMap :: Map String SFacility)
                            )
+
+initStorageMap :: Map String SStorage
+initStorageMap = fromList [("key", stInit 5)]
+                           
+existStorageMap = TestCase (assertEqual "for (defaultUpdate (\f -> f{maxInUse = 4}) \"key\" initStorageMap :: Map String SFacility)," 
+                                   (fromList [("key", (stInit 5) {maxInUse = 4})]) 
+                                   (defaultUpdate (\f -> f{maxInUse = 4}) "key" initStorageMap :: Map String SStorage)
+                           )
+  
+notExistStorageMap = TestCase (E.catch (do let r = (defaultUpdate (\f -> f{maxInUse = 4}) "key1" initStorageMap :: Map String SStorage)
+                                           assertFailure ("expected error but got " ++ show r))
+                                   ((\err -> assertString "" ):: E.ErrorCall -> IO ())
+                          )
+                         
+
                            
 emptyQueueMap = TestCase (assertEqual "for (defaultUpdate id \"key\" empty)," 
                                    (fromList [("key", initQueue)]) 
@@ -43,10 +62,29 @@ notExistQueueMap = TestCase (assertEqual "for (defaultUpdate (\\f -> f{currentCo
                                    (defaultUpdate (\f -> f{currentContent = 1}) "key1" initQueueMap :: Map String SQueue)
                            )
                            
+initProps :: IntMap Double
+initProps = IM.fromList [(1,1)]
+
+existPropMap = TestCase (assertEqual "for (defaultUpdate (+1) 1 initProps :: IntMap Double)," 
+                                   (IM.fromList [(1,2)]) 
+                                   (defaultUpdate (+1) 1 initProps :: IntMap Double)
+                           )
+ 
+notExistPropMap = TestCase (assertEqual "for (defaultUpdate (+1) 2 initProps :: IntMap Double)," 
+                                   (IM.fromList [(1,1),(2,1)]) 
+                                   (defaultUpdate (+1) 2 initProps :: IntMap Double)
+                           )
+
+
+                           
 myMapsTests = TestList [TestLabel "emptyFacilityMap" emptyFacilityMap,
                         TestLabel "existFacilityMap" existFacilityMap,
                         TestLabel "notExistFacilityMap" notExistFacilityMap,
                         TestLabel "emptyQueueMap" emptyQueueMap,
                         TestLabel "existQueueMap" existQueueMap,
-                        TestLabel "notExistQueueMap" notExistQueueMap
+                        TestLabel "notExistQueueMap" notExistQueueMap,
+                        TestLabel "existStorageMap" existStorageMap,
+                        TestLabel "notExistStorageMap" notExistStorageMap,
+                        TestLabel "existPropMap" existPropMap,
+                        TestLabel "notExistPropMap" notExistPropMap
                        ]

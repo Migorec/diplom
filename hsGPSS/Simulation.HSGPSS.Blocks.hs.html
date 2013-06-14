@@ -1,0 +1,148 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>{-# LANGUAGE FlexibleInstances #-} 
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>-- |
+<span class="lineno">    4 </span>module Simulation.HSGPSS.Blocks where
+<span class="lineno">    5 </span>
+<span class="lineno">    6 </span>import Text.Show.Functions
+<span class="lineno">    7 </span>import Control.Monad.State
+<span class="lineno">    8 </span>import Data.Array
+<span class="lineno">    9 </span>
+<span class="lineno">   10 </span>data BlockState = BlockState {<span class="nottickedoff"><span class="decl"><span class="nottickedoff">blocks</span></span></span> :: [Block],
+<span class="lineno">   11 </span>                              <span class="nottickedoff"><span class="decl"><span class="nottickedoff">count</span></span></span> :: Int,
+<span class="lineno">   12 </span>                              <span class="nottickedoff"><span class="decl"><span class="nottickedoff">storages</span></span></span> :: [Storage]
+<span class="lineno">   13 </span>                             } deriving (<span class="decl"><span class="istickedoff"><span class="decl"><span class="nottickedoff">Eq</span></span></span></span>, <span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff">Show</span></span></span></span>)
+<span class="lineno">   14 </span>                             
+<span class="lineno">   15 </span>initState :: BlockState                             
+<span class="lineno">   16 </span><span class="decl"><span class="istickedoff">initState = BlockState [] 0 []</span></span>
+<span class="lineno">   17 </span>
+<span class="lineno">   18 </span>addBlock :: Block -&gt; BlockStateMonad
+<span class="lineno">   19 </span><span class="decl"><span class="istickedoff">addBlock newBlock = </span>
+<span class="lineno">   20 </span><span class="spaces">    </span><span class="istickedoff">do BlockState b c s &lt;- get</span>
+<span class="lineno">   21 </span><span class="spaces">       </span><span class="istickedoff">put $ BlockState (newBlock:b) (c+1) s</span>
+<span class="lineno">   22 </span><span class="spaces">       </span><span class="istickedoff">return c</span></span>
+<span class="lineno">   23 </span>       
+<span class="lineno">   24 </span>addStorage :: Storage -&gt; State BlockState ()
+<span class="lineno">   25 </span><span class="decl"><span class="istickedoff">addStorage newSt = </span>
+<span class="lineno">   26 </span><span class="spaces">    </span><span class="istickedoff">do BlockState b c s &lt;- get</span>
+<span class="lineno">   27 </span><span class="spaces">       </span><span class="istickedoff">put $ BlockState b c (newSt:s)</span></span>
+<span class="lineno">   28 </span>
+<span class="lineno">   29 </span>type Blocks = Array Int Block
+<span class="lineno">   30 </span>
+<span class="lineno">   31 </span>
+<span class="lineno">   32 </span>createModel :: BlockStateMonad -&gt; Blocks
+<span class="lineno">   33 </span><span class="decl"><span class="istickedoff">createModel st = let (_, BlockState bs c _) = runState st initState </span>
+<span class="lineno">   34 </span><span class="spaces">                 </span><span class="istickedoff">in listArray (0,c-1) (reverse bs)</span></span>
+<span class="lineno">   35 </span>
+<span class="lineno">   36 </span>
+<span class="lineno">   37 </span>type BlockStateMonad = State BlockState Int
+<span class="lineno">   38 </span>
+<span class="lineno">   39 </span>instance Eq (Double-&gt;Double) where
+<span class="lineno">   40 </span>    <span class="decl"><span class="nottickedoff">(==) _ _ = True</span></span>
+<span class="lineno">   41 </span>
+<span class="lineno">   42 </span>data Storage = Storage { <span class="nottickedoff"><span class="decl"><span class="nottickedoff">name</span></span></span> :: String,
+<span class="lineno">   43 </span>                         <span class="nottickedoff"><span class="decl"><span class="nottickedoff">capacity</span></span></span> :: Int
+<span class="lineno">   44 </span>                       } deriving (<span class="decl"><span class="istickedoff"><span class="decl"><span class="nottickedoff">Eq</span></span></span></span>, <span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff">Show</span></span></span></span>)
+<span class="lineno">   45 </span>
+<span class="lineno">   46 </span>-- ^ Tип данных для блоков
+<span class="lineno">   47 </span>data Block = AdvanceRange         { <span class="nottickedoff"><span class="decl"><span class="nottickedoff">mean</span></span></span> :: Double,
+<span class="lineno">   48 </span>                                    <span class="nottickedoff"><span class="decl"><span class="nottickedoff">halfRange</span></span></span> :: Double
+<span class="lineno">   49 </span>                                  }
+<span class="lineno">   50 </span>            |AdvanceFunc          { mean :: Double,
+<span class="lineno">   51 </span>                                    <span class="nottickedoff"><span class="decl"><span class="nottickedoff">func</span></span></span> :: Double -&gt; Double
+<span class="lineno">   52 </span>                                  }
+<span class="lineno">   53 </span>            |AdvanceParam         { <span class="nottickedoff"><span class="decl"><span class="nottickedoff">p</span></span></span>    :: Int
+<span class="lineno">   54 </span>                                  }
+<span class="lineno">   55 </span>            |GenerateRangeGeneral { mean :: Double,
+<span class="lineno">   56 </span>                                    halfRange :: Double,
+<span class="lineno">   57 </span>                                    <span class="nottickedoff"><span class="decl"><span class="nottickedoff">delay</span></span></span> :: Double,
+<span class="lineno">   58 </span>                                    <span class="nottickedoff"><span class="decl"><span class="nottickedoff">limit</span></span></span> :: Int,
+<span class="lineno">   59 </span>                                    <span class="nottickedoff"><span class="decl"><span class="nottickedoff">priority</span></span></span> :: Int
+<span class="lineno">   60 </span>                                  }
+<span class="lineno">   61 </span>            |GenerateRangeNoLimit { mean :: Double,
+<span class="lineno">   62 </span>                                    halfRange :: Double,
+<span class="lineno">   63 </span>                                    delay :: Double,
+<span class="lineno">   64 </span>                                    priority :: Int
+<span class="lineno">   65 </span>                                  } 
+<span class="lineno">   66 </span>            |GenerateFuncGeneral  { mean :: Double,
+<span class="lineno">   67 </span>                                    func :: Double -&gt; Double,
+<span class="lineno">   68 </span>                                    delay :: Double,
+<span class="lineno">   69 </span>                                    limit :: Int,
+<span class="lineno">   70 </span>                                    priority :: Int
+<span class="lineno">   71 </span>                                  }
+<span class="lineno">   72 </span>            |GenerateFuncNoLimit  { mean :: Double,
+<span class="lineno">   73 </span>                                    func :: Double -&gt; Double,
+<span class="lineno">   74 </span>                                    delay :: Double,
+<span class="lineno">   75 </span>                                    priority :: Int
+<span class="lineno">   76 </span>                                  }
+<span class="lineno">   77 </span>            |Queue                { <span class="nottickedoff"><span class="decl"><span class="nottickedoff">qName</span></span></span> :: String,
+<span class="lineno">   78 </span>                                    <span class="nottickedoff"><span class="decl"><span class="nottickedoff">inc</span></span></span> :: Int
+<span class="lineno">   79 </span>                                  }
+<span class="lineno">   80 </span>            |Depart               { qName :: String,
+<span class="lineno">   81 </span>                                    <span class="nottickedoff"><span class="decl"><span class="nottickedoff">dec</span></span></span> :: Int
+<span class="lineno">   82 </span>                                  }
+<span class="lineno">   83 </span>            |Seize                {<span class="nottickedoff"><span class="decl"><span class="nottickedoff">fName</span></span></span> :: String}
+<span class="lineno">   84 </span>            |Release              {fName :: String}
+<span class="lineno">   85 </span>            |Enter                {<span class="nottickedoff"><span class="decl"><span class="nottickedoff">sName</span></span></span> :: String,
+<span class="lineno">   86 </span>                                   dec   :: Int}
+<span class="lineno">   87 </span>            |Leave                {sName :: String,
+<span class="lineno">   88 </span>                                   inc   :: Int}
+<span class="lineno">   89 </span>            |Return               {fName :: String}
+<span class="lineno">   90 </span>            |PreemptPR            {fName :: String,
+<span class="lineno">   91 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">nDest</span></span></span> :: Maybe Int,
+<span class="lineno">   92 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">param</span></span></span> :: Maybe Int,
+<span class="lineno">   93 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">removeMode</span></span></span> :: Bool
+<span class="lineno">   94 </span>                                  }
+<span class="lineno">   95 </span>            |PreemptIR            {fName :: String,
+<span class="lineno">   96 </span>                                   nDest :: Maybe Int,
+<span class="lineno">   97 </span>                                   param :: Maybe Int,
+<span class="lineno">   98 </span>                                   removeMode :: Bool
+<span class="lineno">   99 </span>                                  }
+<span class="lineno">  100 </span>            |FAvail               {fName :: String}
+<span class="lineno">  101 </span>            |Terminate            { <span class="nottickedoff"><span class="decl"><span class="nottickedoff">countDec</span></span></span> :: Int
+<span class="lineno">  102 </span>                                  }
+<span class="lineno">  103 </span>            |TransferUnconditional{<span class="nottickedoff"><span class="decl"><span class="nottickedoff">newPlace</span></span></span> :: Int
+<span class="lineno">  104 </span>                                  }
+<span class="lineno">  105 </span>            |TransferFractional1  {<span class="nottickedoff"><span class="decl"><span class="nottickedoff">probability</span></span></span> :: Double,
+<span class="lineno">  106 </span>                                   newPlace :: Int
+<span class="lineno">  107 </span>                                  }
+<span class="lineno">  108 </span>            |TransferFractional2  {probability :: Double,
+<span class="lineno">  109 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">firstPlace</span></span></span> :: Int,
+<span class="lineno">  110 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">secondlace</span></span></span> :: Int
+<span class="lineno">  111 </span>                                  }
+<span class="lineno">  112 </span>            |TransferBoth         {firstPlace :: Int,
+<span class="lineno">  113 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">secondPlace</span></span></span> :: Int
+<span class="lineno">  114 </span>                                  }
+<span class="lineno">  115 </span>            |TransferAll          {firstPlace :: Int,
+<span class="lineno">  116 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">lastPlace</span></span></span> ::Int,
+<span class="lineno">  117 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">step</span></span></span> :: Int
+<span class="lineno">  118 </span>                                  } 
+<span class="lineno">  119 </span>            |TransferPick         {firstPlace ::Int,
+<span class="lineno">  120 </span>                                   lastPlace :: Int
+<span class="lineno">  121 </span>                                  } 
+<span class="lineno">  122 </span>            |TransferParameter    {<span class="nottickedoff"><span class="decl"><span class="nottickedoff">placemaker</span></span></span> :: String,
+<span class="lineno">  123 </span>                                   <span class="nottickedoff"><span class="decl"><span class="nottickedoff">increment</span></span></span> :: Int
+<span class="lineno">  124 </span>                                  }
+<span class="lineno">  125 </span>            |TransferSubroutine   {newPlace :: Int,
+<span class="lineno">  126 </span>                                   placemaker :: String
+<span class="lineno">  127 </span>                                  } deriving (<span class="decl"><span class="istickedoff"><span class="decl"><span class="nottickedoff">Eq</span></span></span></span>,<span class="decl"><span class="nottickedoff"><span class="decl"><span class="nottickedoff">Show</span></span></span></span>)
+<span class="lineno">  128 </span>
+
+</pre>
+</body>
+</html>

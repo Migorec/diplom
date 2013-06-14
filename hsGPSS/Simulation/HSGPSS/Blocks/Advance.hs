@@ -4,7 +4,7 @@ module Simulation.HSGPSS.Blocks.Advance where
 
 import Simulation.HSGPSS.Blocks
 
-data Pr = Pr Double deriving (Eq,Show)
+data Pr = Pr Double 
 
 class AdvanceClass a where
     advance :: a -> BlockStateMonad

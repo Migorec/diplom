@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>module Simulation.HSGPSS.Chains where
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>import Simulation.HSGPSS.Transaction
+<span class="lineno">    4 </span>type FECElem = (Double, Transaction)
+<span class="lineno">    5 </span>
+<span class="lineno">    6 </span>type FEC = [FECElem]
+<span class="lineno">    7 </span>
+<span class="lineno">    8 </span>addFE :: FEC -&gt; FECElem -&gt; FEC
+<span class="lineno">    9 </span><span class="decl"><span class="istickedoff">addFE fec (time, transact) = let (before, after) = span (\x -&gt; fst x &lt;= time) fec</span>
+<span class="lineno">   10 </span><span class="spaces">                             </span><span class="istickedoff">in before ++ ((time,transact):after)</span></span> 
+<span class="lineno">   11 </span>                             
+<span class="lineno">   12 </span>                             
+<span class="lineno">   13 </span>
+<span class="lineno">   14 </span>type PriorityChain = [Transaction]
+<span class="lineno">   15 </span>
+<span class="lineno">   16 </span>type CEC = PriorityChain
+<span class="lineno">   17 </span>type DC = PriorityChain
+<span class="lineno">   18 </span>
+<span class="lineno">   19 </span>addPC :: PriorityChain -&gt; Transaction -&gt; PriorityChain
+<span class="lineno">   20 </span><span class="decl"><span class="istickedoff">addPC pc transact = before ++ (transact:after)</span>
+<span class="lineno">   21 </span><span class="spaces">    </span><span class="istickedoff">where p = priority transact</span>
+<span class="lineno">   22 </span><span class="spaces">          </span><span class="istickedoff">(before, after) = span (\x -&gt; priority x &gt;= p) pc</span></span>
+<span class="lineno">   23 </span>
+<span class="lineno">   24 </span>
+<span class="lineno">   25 </span>type IR = (Maybe Double, Transaction)
+<span class="lineno">   26 </span>
+<span class="lineno">   27 </span>findFInt :: FEC -&gt; String -&gt; (Maybe (Double, Transaction), FEC)
+<span class="lineno">   28 </span><span class="decl"><span class="istickedoff">findFInt [] _ = (Nothing, [])</span>
+<span class="lineno">   29 </span><span class="spaces"></span><span class="istickedoff">findFInt ((t,transact):fs) f| ownership transact == f = (Just (t,transact),fs)</span>
+<span class="lineno">   30 </span><span class="spaces">                            </span><span class="istickedoff">| <span class="tickonlytrue">otherwise</span> = let (r, fs') = findFInt fs f</span>
+<span class="lineno">   31 </span><span class="spaces">                                          </span><span class="istickedoff">in (r,(t,transact):fs')</span></span>
+<span class="lineno">   32 </span>
+<span class="lineno">   33 </span>findCInt :: CEC -&gt; String -&gt; (Maybe Transaction,CEC)
+<span class="lineno">   34 </span><span class="decl"><span class="istickedoff">findCInt [] _ = (Nothing,[])</span>
+<span class="lineno">   35 </span><span class="spaces"></span><span class="istickedoff">findCInt (t:ts) f | ownership t == f = (Just t, ts)</span>
+<span class="lineno">   36 </span><span class="spaces">                  </span><span class="istickedoff">| <span class="tickonlytrue">otherwise</span> = let (r, ts') = findCInt ts f</span>
+<span class="lineno">   37 </span><span class="spaces">                                </span><span class="istickedoff">in (r,t:ts')</span></span>
+<span class="lineno">   38 </span>
+<span class="lineno">   39 </span>findInt :: FEC -&gt; CEC -&gt; String -&gt; ((Maybe Double, Transaction),FEC,CEC)
+<span class="lineno">   40 </span><span class="decl"><span class="istickedoff">findInt fec cec f = </span>
+<span class="lineno">   41 </span><span class="spaces">    </span><span class="istickedoff">case findFInt fec f of</span>
+<span class="lineno">   42 </span><span class="spaces">     </span><span class="istickedoff">(Just (t,transact), fec') -&gt; ((Just t, transact), fec', cec)</span>
+<span class="lineno">   43 </span><span class="spaces">     </span><span class="istickedoff">_ -&gt; case findCInt cec f of</span>
+<span class="lineno">   44 </span><span class="spaces">           </span><span class="istickedoff">(Just transact, cec') -&gt; ((Nothing, transact), fec, cec')</span>
+<span class="lineno">   45 </span><span class="spaces">           </span><span class="istickedoff">_ -&gt; <span class="nottickedoff">error &quot;facility busy, but who did it?&quot;</span></span></span>
+<span class="lineno">   46 </span>          
+<span class="lineno">   47 </span>type IC = [(Maybe Double, Transaction)]
+<span class="lineno">   48 </span>
+<span class="lineno">   49 </span>
+<span class="lineno">   50 </span>addIC :: IC -&gt; (Maybe Double, Transaction) -&gt; IC
+<span class="lineno">   51 </span><span class="decl"><span class="istickedoff">addIC ic (t, transact) = before ++ ((t,transact):after)</span>
+<span class="lineno">   52 </span><span class="spaces">    </span><span class="istickedoff">where <span class="nottickedoff">p = priority transact</span></span>
+<span class="lineno">   53 </span><span class="spaces">          </span><span class="istickedoff">(before, after) = span <span class="nottickedoff">(\(_,x) -&gt; priority x &gt; p)</span> ic</span></span>
+
+</pre>
+</body>
+</html>

@@ -1,0 +1,8 @@
+GENERATE 10,2
+QUEUE WaitingLine
+SEIZE Worker
+DEPART WaitingLine
+ADVANCE 3
+RELEASE Worker
+TERMINATE 1
+

@@ -4,7 +4,7 @@ module Simulation.HSGPSS.Blocks.Transfer where
 
 import Simulation.HSGPSS.Blocks
 
-data TransferMode = Both | All | Pick | P | Sbr deriving (Eq, Show)
+data TransferMode = Both | All | Pick | P | Sbr 
 
 class TransferClass a where
     transfer :: a -> BlockStateMonad

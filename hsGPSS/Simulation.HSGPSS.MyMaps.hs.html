@@ -1,0 +1,59 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, TypeSynonymInstances, FlexibleInstances #-}
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>
+<span class="lineno">    4 </span>module Simulation.HSGPSS.MyMaps where
+<span class="lineno">    5 </span>
+<span class="lineno">    6 </span>import Simulation.HSGPSS.Queue
+<span class="lineno">    7 </span>import Simulation.HSGPSS.Facility
+<span class="lineno">    8 </span>import Simulation.HSGPSS.Storage
+<span class="lineno">    9 </span>import qualified Data.IntMap as IM
+<span class="lineno">   10 </span>import qualified Data.Map as M
+<span class="lineno">   11 </span>
+<span class="lineno">   12 </span>class DefaultUpdateClass a b k | a -&gt; k, a -&gt; b where
+<span class="lineno">   13 </span>    defaultUpdate :: (b -&gt; b) -&gt; k -&gt; a -&gt; a
+<span class="lineno">   14 </span>    
+<span class="lineno">   15 </span>    
+<span class="lineno">   16 </span>instance DefaultUpdateClass (M.Map String SFacility) SFacility String where
+<span class="lineno">   17 </span>    <span class="decl"><span class="istickedoff">defaultUpdate f key m = case val of</span>
+<span class="lineno">   18 </span><span class="spaces">                                </span><span class="istickedoff">Nothing -&gt; M.insert key (f initFacility) m</span>
+<span class="lineno">   19 </span><span class="spaces">                                </span><span class="istickedoff">Just v  -&gt; M.adjust f key m</span>
+<span class="lineno">   20 </span><span class="spaces">        </span><span class="istickedoff">where val = M.lookup key m</span></span>
+<span class="lineno">   21 </span>        
+<span class="lineno">   22 </span>instance DefaultUpdateClass (M.Map String SStorage) SStorage String where
+<span class="lineno">   23 </span>    <span class="decl"><span class="istickedoff">defaultUpdate f key m = case val of</span>
+<span class="lineno">   24 </span><span class="spaces">                                </span><span class="istickedoff">Nothing -&gt; error &quot;no default for Storage. Int shoulb be defined explicitly&quot;</span>
+<span class="lineno">   25 </span><span class="spaces">                                </span><span class="istickedoff">Just v  -&gt; M.adjust f key m</span>
+<span class="lineno">   26 </span><span class="spaces">        </span><span class="istickedoff">where val = M.lookup key m</span></span>
+<span class="lineno">   27 </span>
+<span class="lineno">   28 </span>instance DefaultUpdateClass (M.Map String SQueue) SQueue String where
+<span class="lineno">   29 </span>    <span class="decl"><span class="istickedoff">defaultUpdate f key m = case val of</span>
+<span class="lineno">   30 </span><span class="spaces">                                </span><span class="istickedoff">Nothing -&gt; M.insert key (f initQueue) m</span>
+<span class="lineno">   31 </span><span class="spaces">                                </span><span class="istickedoff">Just v  -&gt; M.adjust f key m</span>
+<span class="lineno">   32 </span><span class="spaces">        </span><span class="istickedoff">where val = M.lookup key m</span></span>
+<span class="lineno">   33 </span>        
+<span class="lineno">   34 </span>instance DefaultUpdateClass (IM.IntMap Double) Double Int where
+<span class="lineno">   35 </span>    <span class="decl"><span class="istickedoff">defaultUpdate f key m = case val of</span>
+<span class="lineno">   36 </span><span class="spaces">                                </span><span class="istickedoff">Nothing -&gt; IM.insert key (f 0) m</span>
+<span class="lineno">   37 </span><span class="spaces">                                </span><span class="istickedoff">Just v  -&gt; IM.adjust f key m</span>
+<span class="lineno">   38 </span><span class="spaces">        </span><span class="istickedoff">where val = IM.lookup  key m</span></span>
+<span class="lineno">   39 </span>
+
+</pre>
+</body>
+</html>

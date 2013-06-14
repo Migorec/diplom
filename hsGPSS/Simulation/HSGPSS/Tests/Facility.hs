@@ -2,6 +2,8 @@ module Simulation.HSGPSS.Tests.Facility (sFacilityTests) where
 
 import Test.HUnit
 import Simulation.HSGPSS.Facility
+import Simulation.HSGPSS.Transaction
+import Data.IntMap
 import Data.List
 import qualified Control.Exception as E
 
@@ -26,5 +28,38 @@ goodSeq = TestCase (assertEqual "for snd $ mapAccumL (\a f -> let r = f a in (r,
                                 ]
                                 (snd $ mapAccumL (\a f -> let r = f a in (r,ASF r)) initFacility testSeq)
                   )
+
+defTransact :: Transaction
+defTransact = Transaction 0 0 0 Active empty ""
+
+queueTest = TestCase ( assertEqual "for  (queue defTransact initFacility)"
+                                   initFacility{dc = [defTransact]}
+                                   (queue defTransact initFacility)
+                     )
                   
-sFacilityTests = TestList [TestLabel "goodSeq" goodSeq]
+sInterruptTest = TestCase ( assertEqual "for (sInterrupt (Nothing,defTransact) initFacility)"
+                                   initFacility{ic = [(Nothing, defTransact)]}
+                                   (sInterrupt (Nothing,defTransact) initFacility)
+                     )
+                  
+setInterruptTest = TestCase ( assertEqual "for (setInterrupt initFacility)"
+                                initFacility{isInterrupted = True}
+                                (setInterrupt initFacility)
+                            )
+                  
+unsetInterruptTest = TestCase ( assertEqual "for (unsetInterrupt initFacility)"
+                                initFacility{isInterrupted = False}
+                                (unsetInterrupt initFacility)
+                            )
+                  
+pendTest = TestCase ( assertEqual "for  (pend defTransact initFacility)"
+                                   initFacility{pc = [defTransact]}
+                                   (pend defTransact initFacility)
+                     )
+                  
+sFacilityTests = TestList [TestLabel "goodSeq" goodSeq,
+                           TestLabel "queueTest" queueTest,
+                           TestLabel "sInterruptTest" sInterruptTest,
+                           TestLabel "setInterruptTest" setInterruptTest,
+                           TestLabel "unsetInterruptTest" unsetInterruptTest,
+                           TestLabel "pendTest" pendTest]

@@ -9,6 +9,7 @@ import Statistics.Test.ChiSquared
 import Statistics.Distribution
 import Statistics.Distribution.Exponential
 import Data.List (mapAccumL)
+import Debug.Trace
  
 
 statUniform m h = do let a = m - h
@@ -46,25 +47,38 @@ nonRandomDistTest = TestCase ( do rs <-replicateM 200 $ randomDist 5 5
                                     else assertFailure "nonRandomDistTest failed"
                              )
   
-{-                    
-xpdisDist m = do l <- replicateM 200 $ randomMFTime m xpdis
-                 let dist = exponential (1/m)
-                     etalon = (mapAccumL (\a x -> let p = cumulative dist x in (p,p - a)) 0 [0.5, 1, 1.5, 2, 3, 5, 10, 20]) ++ [1 - cumulative 20]
-                     hist = map (\x -> filter (\y -> ) l) [0.5, 1, 1.5, 2, 3, 5, 10, 20]
-                     
-                     
-                     
-                 --let hist = map (\i -> ) [0 .. 9] 
-                 --return $ fromList $ zip hist $ replicate 
-                      
-xpdisTest = TestCase ( 
+  
+xpd lambda x | x < 0 = 0
+             | otherwise = 1 - exp (-lambda * x)
+  
+xpp lambda x1 x2 = xpd lambda x2 - xpd lambda x1
+  
+statXP m = do let a = 0
+                  b = m * 4
+                  dx = (b - a) / 10
+                  lambda = 1/m
+              l <- replicateM 200 $ randomMFTime m xpdis
+              let hist = map (\i -> length $ filter (\x -> x > a + i*dx && x <= a + (i+1)*dx) l) [0 .. 9]
+                  hist1 = map (\i -> 200 * xpp lambda (a + i*dx) (a + (i+1)*dx)) [0..9]
+              return $ fromList $ zip hist hist1
 
-                     )
-                      
--}
+xpdisTest1 = TestCase (do stat <- statXP 1
+                          case chi2test 0.05 0 stat of
+                            Significant -> assertFailure "xpdisTest1 test failed with p-value = 0.05"
+                            NotSignificant -> assertString ""
+                      )
+
+xpdisTest5 = TestCase (do stat <- statXP 5
+                          case chi2test 0.05 0 stat of
+                            Significant -> assertFailure "xpdisTest5 test failed with p-value = 0.05"
+                            NotSignificant -> assertString ""
+                      )
+
                       
 randomTests = TestList [TestLabel "mhTimeTest" mhTimeTest,
                         TestLabel "nonRandomTimeTest" nonRandomTimeTest,
                         TestLabel "randomDistTest" randomDistTest,
-                        TestLabel "nonRandomDistTest" nonRandomDistTest
+                        TestLabel "nonRandomDistTest" nonRandomDistTest,
+                        TestLabel "xpdisTest1" xpdisTest1,
+                        TestLabel "xpdisTest5" xpdisTest5
                        ]

@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+span.lineno { color: white; background: #aaaaaa; border-right: solid white 12px }
+span.nottickedoff { background: yellow}
+span.istickedoff { background: white }
+span.tickonlyfalse { margin: -1px; border: 1px solid #f20913; background: #f20913 }
+span.tickonlytrue  { margin: -1px; border: 1px solid #60de51; background: #60de51 }
+span.funcount { font-size: small; color: orange; z-index: 2; position: absolute; right: 20 }
+span.decl { font-weight: bold }
+span.spaces    { background: white }
+</style>
+</head>
+<body>
+<pre>
+<span class="lineno">    1 </span>module Main where
+<span class="lineno">    2 </span>
+<span class="lineno">    3 </span>import Simulation.HSGPSS.Tests.Blocks.Generate
+<span class="lineno">    4 </span>import Simulation.HSGPSS.Tests.Blocks.Advance
+<span class="lineno">    5 </span>import Simulation.HSGPSS.Tests.Blocks.Terminate
+<span class="lineno">    6 </span>import Simulation.HSGPSS.Tests.Blocks.Transfer
+<span class="lineno">    7 </span>import Simulation.HSGPSS.Tests.Blocks.Queue
+<span class="lineno">    8 </span>import Simulation.HSGPSS.Tests.Blocks.Depart
+<span class="lineno">    9 </span>import Simulation.HSGPSS.Tests.Blocks.Facility
+<span class="lineno">   10 </span>import Simulation.HSGPSS.Tests.Blocks.Storage
+<span class="lineno">   11 </span>import Simulation.HSGPSS.Tests.Blocks
+<span class="lineno">   12 </span>import Simulation.HSGPSS.Tests.Chains
+<span class="lineno">   13 </span>import Simulation.HSGPSS.Tests.MyMaps
+<span class="lineno">   14 </span>import Simulation.HSGPSS.Tests.SimulationState
+<span class="lineno">   15 </span>import Simulation.HSGPSS.Tests.MyArray
+<span class="lineno">   16 </span>import Simulation.HSGPSS.Tests.Queue
+<span class="lineno">   17 </span>import Simulation.HSGPSS.Tests.Facility
+<span class="lineno">   18 </span>import Simulation.HSGPSS.Tests.Random
+<span class="lineno">   19 </span>import Simulation.HSGPSS.Tests.Storage
+<span class="lineno">   20 </span>import Test.HUnit
+<span class="lineno">   21 </span>
+<span class="lineno">   22 </span><span class="decl"><span class="istickedoff">tests = TestList [ TestLabel <span class="nottickedoff">&quot;generateTests&quot;</span> generateTests,</span>
+<span class="lineno">   23 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;advanceTests&quot;</span> advanceTests,</span>
+<span class="lineno">   24 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;terminateTests&quot;</span> terminateTests,</span>
+<span class="lineno">   25 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;transferTests&quot;</span> transferTests,</span>
+<span class="lineno">   26 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;queueTests&quot;</span> queueTests,</span>
+<span class="lineno">   27 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;departTests&quot;</span> departTests,</span>
+<span class="lineno">   28 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;facilityTests&quot;</span> facilityTests,</span>
+<span class="lineno">   29 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;storageTests&quot;</span> storageTests,</span>
+<span class="lineno">   30 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;blocksTests&quot;</span> blocksTests,</span>
+<span class="lineno">   31 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;chainsTests&quot;</span> chainsTests,</span>
+<span class="lineno">   32 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;myMapsTests&quot;</span> myMapsTests,</span>
+<span class="lineno">   33 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;simulationStateTests&quot;</span> simulationStateTests,</span>
+<span class="lineno">   34 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;myArrayTest&quot;</span> myMapsTests,</span>
+<span class="lineno">   35 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;sQueueTests&quot;</span> sQueueTests,</span>
+<span class="lineno">   36 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;sFacilityTests&quot;</span> sFacilityTests,</span>
+<span class="lineno">   37 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;randomTests&quot;</span> randomTests,</span>
+<span class="lineno">   38 </span><span class="spaces">                   </span><span class="istickedoff">TestLabel <span class="nottickedoff">&quot;sStorageTests&quot;</span> sStorageTests</span>
+<span class="lineno">   39 </span><span class="spaces">                 </span><span class="istickedoff">]</span></span>
+<span class="lineno">   40 </span>
+<span class="lineno">   41 </span><span class="decl"><span class="istickedoff">main = runTestTT tests</span></span>
+
+</pre>
+</body>
+</html>
