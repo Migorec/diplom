@@ -4,9 +4,6 @@ import Data.IORef
 import Graphics.UI.WX
 import Graphics.UI.WX  as WX (start)
 
-import Data.Binding.Simple
-import Graphics.UI.WX.Binding
-
 import Models.Param hiding (set)
 import Plot
 

@@ -162,11 +162,27 @@ emptyFEC = TestCase (assertEqual "for (addFE [] (1,defTransact)),"
 \end{tabular}
 \end{table}
 
-В общей сложности было проведено 84 теста. Вывод тестовой программы представлен ниже.
+В общей сложности было проведено 148 тестов. Степень покрытия кода тестами показана в таблице~\ref{tab:coverage}. Вывод тестовой программы представлен ниже.
 
 \begin{verbatim}
-Cases: 84  Tried: 84  Errors: 0  Failures: 0
+Cases: 148  Tried: 148  Errors: 0  Failures: 0
 \end{verbatim}
+
+\begin{table}[ht!]
+\caption{Степень покрытия кода тестами}
+\begin{tabular}{|p{0.2\textwidth}|c|c|c|}
+\hline
+Подсистема & Покрытие функций & Покрытие условий & Покрытие выражений\\
+\hline
+\parbox{0.25\textwidth} {Формирование \\моделей }& 82\% & 100\% & 83\% \\
+\hline
+\parbox{0.25\textwidth} {Имитационное \\моделирование }& 72\% & 96\% & 93\% \\
+\hline
+\end{tabular}
+\label{tab:coverage}
+\end{table}
+
+Тестирование проводилось на машинах с различными операционными системами: Ubuntu 12.04, Ubuntu 13.04, MS Windows 7. На всех библиотека скомпилировалась без ошибок и все тесты были пройдены успешно.
 
 
 \subsection{Тестирование стохастических функций}

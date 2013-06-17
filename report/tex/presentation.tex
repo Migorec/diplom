@@ -175,9 +175,9 @@ model =
 \end{minipage}
 
 
-\section{Состояние системы в процессе моделирования}
+\section{Сущности имитационной модели}
 
-\includegraphics[width=\textwidth]{inc/dia/umlSim}
+\includegraphics[height=.8\textheight]{inc/dia/er}
 
 
 \section{Алгоритм имитационного моделирования}
@@ -215,10 +215,42 @@ model =
 %\section{Сравнение аналитической и имитационной модели}
 %\includegraphics[height=0.75\textheight]{inc/pdf/plot2}
 
-\section{Сравнение аналитической и имитационной модели}
+\section{Модульное  тестирование}
+\raggedright
+\footnotesize
+\begin{tabular}{|l|c|c|c|}
+\hline
+Подсистема & Покрытие функций & Покрытие условий & Покрытие выражений\\
+\hline
+& & & \\
+\hline
+\parbox{0.25\textwidth} {Формирование \\моделей }& 82\% & 100\% & 83\% \\
+\hline
+\parbox{0.25\textwidth} {Имитационное \\моделирование }& 72\% & 96\% & 93\% \\
+\hline
+\end{tabular}
+
+
+%\subsubsection{Тестовые машины}
+
+%\begin{tabular}{|l|l|l|}
+%\hline
+%ЦП & ОЗУ & ОС \\
+
+%\hline
+%Intel® Atom™ CPU N270 @ 1.60GHz  & 2.0 GiB& Ubuntu 12.04 LTS \\
+
+%\hline
+%\end{tabular}
+
+
+
+\normalsize
+\section{Тестирование при отсутствии отказов}
+\centering
 \includegraphics[height=0.75\textheight]{inc/pdf/plot3}
 
-\section{Сравнение аналитической и имитационной модели}
+\section{Тестирование при наличии отказов}
 \includegraphics[height=0.75\textheight]{inc/pdf/plot4}
 
 %\section{Сравнение аналитической и имитационной модели}
