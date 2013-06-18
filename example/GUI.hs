@@ -10,7 +10,7 @@ import Plot
 
 
 gui = do --create widgits
-         window <- frame [text := "Data Binding with WxHaskell"]
+         window <- frame [text := "Demo"]
          
          k <- hslider window False 1 50 [selection := 5]
          kTitle <- staticText window [text := "Количество пользователей: ", clientSize := sz 230 20]
@@ -129,7 +129,7 @@ gui = do --create widgits
 
          
 
-         run <- button window [text := "Пуск!", on command := do rad <- get radio selection
+         run <- button window [text := "Построить", on command := do rad <- get radio selection
                                                                  --print test 
                                                                  mp <- do k <- get kVariable value
                                                                           m <- get mVariable value
